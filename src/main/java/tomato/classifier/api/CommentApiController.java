@@ -11,7 +11,7 @@ import tomato.classifier.service.CommentService;
 @RequiredArgsConstructor
 public class CommentApiController {
 
-    private CommentService commentService;
+    private  final CommentService commentService;
 
     @PostMapping("/article/{articleId}/comment-add")
     public ResponseEntity<CommentDto> write(@PathVariable Integer articleId, @RequestBody CommentDto commentDto) {
