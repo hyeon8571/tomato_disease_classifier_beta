@@ -29,7 +29,6 @@ public class ArticleApiController {
     @PatchMapping("/edit/{articleId}")
     public ResponseEntity<ArticleDto> edit(@PathVariable Integer articleId, @RequestBody ArticleDto articleDto) {
 
-
         ArticleDto updatedDto = articleService.update(articleId, articleDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedDto);

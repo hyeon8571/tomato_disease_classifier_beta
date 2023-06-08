@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tomato.classifier.entity.Comment;
+import tomato.classifier.entity.User;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class CommentDto {
 
     private Integer articleId;
 
-    private String commentWriter;
+    private User user;
 
     private String content;
 
@@ -33,7 +33,7 @@ public class CommentDto {
         return new CommentDto(
                 target.getCommentId(),
                 target.getArticle().getArticleId(),
-                target.getCommentWriter(),
+                target.getUser(),
                 target.getContent(),
                 target.isDeleteYn(),
                 target.isUpdateYn(),

@@ -6,9 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tomato.classifier.entity.Article;
 import tomato.classifier.entity.Comment;
+import tomato.classifier.entity.User;
 
-import javax.persistence.Column;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,9 +20,9 @@ public class ArticleDto {
 
     private String title;
 
-    private String articleWriter;
-
     private String content;
+
+    private User user;
 
     private boolean deleteYn;
 
@@ -35,14 +34,15 @@ public class ArticleDto {
 
     private Integer commentCount;
 
+
     public static ArticleDto convertDto(Article target) {
 
 
         return new ArticleDto(
                 target.getArticleId(),
                 target.getTitle(),
-                target.getArticleWriter(),
                 target.getContent(),
+                target.getUser(),
                 target.isDeleteYn(),
                 target.isUpdateYn(),
                 target.getUpdateTime(),

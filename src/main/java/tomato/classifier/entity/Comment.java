@@ -21,8 +21,9 @@ public class Comment extends BaseTime{
     @JoinColumn(name = "articleId")
     private Article article;
 
-    @Column
-    private String commentWriter;
+    @ManyToOne
+    @JoinColumn(name = "loginId")
+    private User user;
 
     @Column
     private String content;
@@ -35,7 +36,7 @@ public class Comment extends BaseTime{
 
     public static Comment convertEntity(CommentDto commentDto, Article article) {
         if (commentDto.getCommentId() != null) {
-            throw new IllegalArgumentException("댓글 생성 실패, id가 존재");
+            throw new IllegalArgumentException("Dto -> Entity 실패, id가 존재");
         }
 
         if (commentDto.getArticleId() != article.getArticleId()) {
@@ -45,7 +46,7 @@ public class Comment extends BaseTime{
         return new Comment(
                 commentDto.getCommentId(),
                 article,
-                commentDto.getCommentWriter(),
+                commentDto.getUser(),
                 commentDto.getContent(),
                 commentDto.isDeleteYn(),
                 commentDto.isUpdateYn()

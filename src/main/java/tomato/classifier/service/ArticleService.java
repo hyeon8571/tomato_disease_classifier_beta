@@ -20,14 +20,12 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAll();
 
         List<ArticleDto> articleDtos = new ArrayList<>();
-        for (Article article : articles) {
 
-            if (!article.isDeleteYn()) {
+        articles.stream()
+                .filter(article -> article.isDeleteYn() == false)
+                .map(article -> ArticleDto.convertDto(article))
+                .forEach(articleDto -> articleDtos.add(articleDto));
 
-                ArticleDto articleDto = ArticleDto.convertDto(article);
-                articleDtos.add(articleDto);
-            }
-        }
         return articleDtos;
     }
 

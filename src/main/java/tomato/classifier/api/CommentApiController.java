@@ -39,8 +39,5 @@ public class CommentApiController {
         return ResponseEntity.status(HttpStatus.OK).body(deletedDto);
     }
 
-    public void hello() {
-
-    }
 }
 

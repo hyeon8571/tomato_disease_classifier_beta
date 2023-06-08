@@ -3,13 +3,9 @@ package tomato.classifier.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import tomato.classifier.dto.ArticleDto;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -25,8 +21,9 @@ public class Article extends BaseTime{
     @Column
     private String title;
 
-    @Column
-    private String articleWriter;
+    @ManyToOne
+    @JoinColumn(name = "loginId")
+    private User user;
 
     @Column
     private String content;
@@ -48,7 +45,7 @@ public class Article extends BaseTime{
         return new Article(
                 target.getArticleId(),
                 target.getTitle(),
-                target.getArticleWriter(),
+                target.getUser(),
                 target.getContent(),
                 target.isDeleteYn(),
                 target.isUpdateYn(),

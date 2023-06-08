@@ -32,11 +32,9 @@ public class CommentService {
 
         List<CommentDto> comments = new ArrayList<>();
 
-        for (CommentDto comment : allCommentDtos) {
-            if (!comment.isDeleteYn()) {
-                comments.add(comment);
-            }
-        }
+        allCommentDtos.stream()
+                .filter(commentDto -> commentDto.isDeleteYn() == false)
+                .forEach(commentDto -> comments.add(commentDto));
 
         return comments;
     }

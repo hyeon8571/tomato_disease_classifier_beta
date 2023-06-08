@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import tomato.classifier.data.ResultData;
 import tomato.classifier.dto.DiseaseDto;
-import tomato.classifier.entity.Disease;
-import tomato.classifier.repository.DiseaseRepository;
-import tomato.classifier.repository.TomatoRepository;
 import tomato.classifier.service.MainService;
 
 
