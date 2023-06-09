@@ -9,7 +9,7 @@
 <div th:fragment="nav">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="/"><img src="/image/mainlogo.png" alt="메인 로고" style="width: 3rem; height: 2rem;"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -20,27 +20,23 @@
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/map">Map</a>
+                    <a class="nav-link" href="/article">Board</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Board</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
+                    <a class="nav-link" href="/map">Map</a>
                 </li>
             </ul>
         </div>
     </div>
-    <div>
-        <a class="nav-link" href="#">MyPage</a>
+    <div th:if="${session.loginMember == null}">
+        <a class="nav-link" href="/loginForm" style="text-decoration: none">Login</a>
+    </div>
+
+    <div th:if="${session.loginMember != null}" style="margin-right: 0.7rem">
+        <a href="/mypage" class="link-success" style="text-decoration: none">MyPage</a>
+    </div>
+    <div th:if="${session.loginMember != null}" style="margin-right: 0.7rem">
+        <a href="/auth/logout" class="link-danger" style="text-decoration: none">Logout</a>
     </div>
 </nav>
 </div>

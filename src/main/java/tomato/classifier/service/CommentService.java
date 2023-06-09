@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import tomato.classifier.dto.CommentDto;
 import tomato.classifier.entity.Article;
 import tomato.classifier.entity.Comment;
+import tomato.classifier.entity.User;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.CommentRepository;
+import tomato.classifier.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class CommentService {
     private final ArticleRepository articleRepository;
 
     private final CommentRepository commentRepository;
+
+    private final UserRepository userRepository;
 
     public List<CommentDto> comments(Integer articleId) {
 
@@ -47,7 +51,11 @@ public class CommentService {
         commentDto.setDeleteYn(false);
         commentDto.setUpdateYn(false);
 
-        Comment comment = Comment.convertEntity(commentDto, article);
+        String nickname = commentDto.getNickname();
+
+        User user = userRepository.findByNickname(nickname);
+
+        Comment comment = Comment.convertEntity(commentDto, article, user);
 
         Comment created = commentRepository.save(comment);
 

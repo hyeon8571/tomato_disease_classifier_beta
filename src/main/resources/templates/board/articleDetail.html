@@ -43,7 +43,7 @@
 
     <tbody>
     <tr>
-        <th scope="row" th:text="${article.articleWriter} +  '&emsp; | &emsp;'  + ${article.updateTime}">작성자  |  작성시간</th>
+        <th scope="row" th:text="${article.nickname} +  '&emsp; | &emsp;'  + ${article.updateTime}">작성자  |  작성시간</th>
         <td><p th:text="'댓글 수: ' + ${comments.size()}">댓글 수: {{count}}</p></td>
     </tr>
     <tr>
@@ -55,7 +55,7 @@
 <div class="container" style="width: 70%">
     <form th:method="post">
         <div class="mb-3">
-            <input class="form-control form-control-sm" type="text" aria-label=".form-control-sm example" id="commentWriter"  placeholder="작성자(삭제)">
+            <input class="form-control form-control-sm" type="text" aria-label=".form-control-sm example" value="" th:value="${loginUser.nickname}" disabled>
             <textarea class="form-control form-control-sm" id="commentContent" rows="3"  placeholder="댓글 입력"></textarea>
         </div>
         <p>
@@ -70,7 +70,7 @@
     <table class="table">
         <tbody>
         <tr th:each="comment : ${comments}">
-            <td th:text="${comment.commentWriter}" th:class="col-sm-2">작성자</td>
+            <td th:text="${comment.nickname}" th:class="col-sm-2">작성자</td>
             <td th:text="${comment.updateTime}" th:class="col-sm-2">작성일</td>
             <td th:text="${comment.content}"th:class="col-sm-7" style="word-break: break-all">내용</td>
             <td th:class="col-md-1">
@@ -79,7 +79,7 @@
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" th:id="commentSelect" data-bs-toggle="modal" data-bs-target="#updateModal" th:onclick="commentSelectFunc([[${comment.commentId}]], [[${comment.commentWriter}]], [[${comment.content}]])">수정</a></li>
+                        <li><a class="dropdown-item" th:id="commentSelect" data-bs-toggle="modal" data-bs-target="#updateModal" th:onclick="commentSelectFunc([[${comment.commentId}]], [[${comment.nickname}]], [[${comment.content}]])">수정</a></li>
                         <li><a class="dropdown-item" th:id="commentDelete" th:onclick="commentDeleteFunc([[${comment.commentId}]])">삭제</a></li>
                     </ul>
                 </div>
@@ -144,7 +144,7 @@
     submitBtn.addEventListener("click", function(){
         const comment = {
             articleId : article_Id,
-            commentWriter : document.querySelector("#commentWriter").value,
+            nickname : document.querySelector("#nickname").value,
             content : document.querySelector("#commentContent").value
         }
 
@@ -153,7 +153,7 @@
         const url = `/article/${article_Id}/comment-add`;
         console.log(url);
 
-        if(comment.commentWriter != "" && comment.content != ""){
+        if(comment.nickname != "" && comment.content != ""){
             fetch(url,{
                 method: "POST",
                 body : JSON.stringify(comment),

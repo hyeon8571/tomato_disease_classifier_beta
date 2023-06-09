@@ -18,7 +18,7 @@ public class CommentDto {
 
     private Integer articleId;
 
-    private User user;
+    private String nickname;
 
     private String content;
 
@@ -33,7 +33,7 @@ public class CommentDto {
         return new CommentDto(
                 target.getCommentId(),
                 target.getArticle().getArticleId(),
-                target.getUser(),
+                target.getUser().getNickname(),
                 target.getContent(),
                 target.isDeleteYn(),
                 target.isUpdateYn(),

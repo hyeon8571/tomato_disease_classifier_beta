@@ -38,14 +38,14 @@ public class Article extends BaseTime{
     private List<Comment> comments;
 
 
-    public static Article convertEntity(ArticleDto target) {
+    public static Article convertEntity(ArticleDto target, User user) {
         if(target.getArticleId() != null)
             throw new IllegalArgumentException("게시글 생성 실패, id가 존재");
 
         return new Article(
                 target.getArticleId(),
                 target.getTitle(),
-                target.getUser(),
+                user,
                 target.getContent(),
                 target.isDeleteYn(),
                 target.isUpdateYn(),

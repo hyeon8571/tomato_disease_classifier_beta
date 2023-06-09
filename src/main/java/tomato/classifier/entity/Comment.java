@@ -34,7 +34,7 @@ public class Comment extends BaseTime{
     @Column
     private boolean updateYn;
 
-    public static Comment convertEntity(CommentDto commentDto, Article article) {
+    public static Comment convertEntity(CommentDto commentDto, Article article, User user) {
         if (commentDto.getCommentId() != null) {
             throw new IllegalArgumentException("Dto -> Entity 실패, id가 존재");
         }
@@ -46,7 +46,7 @@ public class Comment extends BaseTime{
         return new Comment(
                 commentDto.getCommentId(),
                 article,
-                commentDto.getUser(),
+                user,
                 commentDto.getContent(),
                 commentDto.isDeleteYn(),
                 commentDto.isUpdateYn()

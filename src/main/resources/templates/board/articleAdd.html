@@ -17,9 +17,9 @@
     <h2>게시글 등록</h2>
   </div>
   <form th:action method="post">
-    <div class="mb-3">
-      <label for="writer">작성자</label>
-      <input type="text" class="form-control" id="writer">
+    <div th:object="${loginUser}" class="mb-3">
+      <label for="nickname">작성자</label>
+      <input type="text" class="form-control" id="nickname" th:field="*{nickname}" disabled>
     </div>
     <div class="mb-3">
       <label for="title">제목</label>
@@ -51,7 +51,7 @@
 
     submitBtn.addEventListener("click", function(){
         const article = {
-            articleWriter : document.querySelector("#writer").value,
+            nickname : document.querySelector("#nickname").value,
             title : document.querySelector("#title").value,
             content : document.querySelector("#content").value
         }

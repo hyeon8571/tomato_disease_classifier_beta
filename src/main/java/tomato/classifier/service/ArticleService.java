@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tomato.classifier.dto.ArticleDto;
 import tomato.classifier.entity.Article;
+import tomato.classifier.entity.User;
 import tomato.classifier.repository.ArticleRepository;
+import tomato.classifier.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+
+    private final UserRepository userRepository;
 
     public List<ArticleDto> showAll() {
         List<Article> articles = articleRepository.findAll();
@@ -43,8 +47,11 @@ public class ArticleService {
         articleDto.setDeleteYn(false);
         articleDto.setUpdateYn(false);
 
-        Article article = Article.convertEntity(articleDto);
+        String nickname = articleDto.getNickname();
 
+        User user = userRepository.findByNickname(nickname);
+
+        Article article = Article.convertEntity(articleDto, user);
 
         Article created = articleRepository.save(article);
 

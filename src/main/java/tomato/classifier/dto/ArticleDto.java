@@ -22,7 +22,7 @@ public class ArticleDto {
 
     private String content;
 
-    private User user;
+    private String nickname;
 
     private boolean deleteYn;
 
@@ -37,17 +37,25 @@ public class ArticleDto {
 
     public static ArticleDto convertDto(Article target) {
 
+        Integer count = 0;
+        if(target.getComments() != null) {
+            for (Comment comment : target.getComments()) {
+                if (!comment.isDeleteYn()) {
+                    count++;
+                }
+            }
+        }
 
         return new ArticleDto(
                 target.getArticleId(),
                 target.getTitle(),
                 target.getContent(),
-                target.getUser(),
+                target.getUser().getNickname(),
                 target.isDeleteYn(),
                 target.isUpdateYn(),
                 target.getUpdateTime(),
                 target.getComments(),
-                target.getComments().size()
+                count
         );
     }
 
