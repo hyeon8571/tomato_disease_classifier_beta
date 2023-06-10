@@ -49,17 +49,17 @@ public class ArticleController {
 
         ArticleDto articleDto = articleService.show(articleId);
 
-
         List<CommentDto> comments = commentService.comments(articleId);
 
         if (loginUser != null) {
             model.addAttribute("loginUser", loginUser);
+        } else {
+            model.addAttribute("loginUser", new LoginDto());
         }
 
         model.addAttribute("article", articleDto);
 
         model.addAttribute("comments", comments);
-
 
         return "board/articleDetail";
     }

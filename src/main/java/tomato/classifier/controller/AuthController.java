@@ -9,7 +9,7 @@ import tomato.classifier.dto.SignupDto;
 @Controller
 public class AuthController {
 
-    @GetMapping("/loginForm")
+    @GetMapping("/auth/login")
     public String loginForm(@ModelAttribute(name = "loginDto") LoginDto loginDto) {
         return "auth/login";
     }

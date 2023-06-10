@@ -48,22 +48,19 @@ public class AuthApiController {
 
         userRepository.save(user);
 
-        return "redirect:/loginForm";
+        return "redirect:/auth/login";
     }
 
     @PostMapping("/auth/login")
     public String login(@Validated @ModelAttribute(name = "loginDto")LoginDto loginDto,
                         BindingResult bindingResult,
-                        @RequestParam(defaultValue = "/")String redirectURL,
+                        @RequestParam(defaultValue = "/") String redirectURL,
                         HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
             return "/auth/login";
         }
 
-        /*
-        * 시큐리티 적용 전 임시 로그인 로직
-        */
         User user = userRepository.findByLoginId(loginDto.getLoginId());
 
         if ((user == null) || (!user.getPassword().equals(loginDto.getPassword()))) {
