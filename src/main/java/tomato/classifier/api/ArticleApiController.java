@@ -25,7 +25,7 @@ public class ArticleApiController {
 
         ArticleDto created = articleService.create(articleDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(articleDto);
+        return ResponseEntity.status(HttpStatus.OK).body(created);
     }
 
     @PatchMapping("/edit/{articleId}")
