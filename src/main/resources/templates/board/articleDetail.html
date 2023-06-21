@@ -87,7 +87,7 @@
                 <td th:text="${comment.content}" th:class="col-sm-7" style="word-break: break-all">내용</td>
                 <td th:class="col-md-1">
                     <div>
-                        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                        <button th:if="${session.loginMember} != null and ${session.loginMember.nickname} == ${comment.nickname}" type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
@@ -141,7 +141,7 @@
 
 <script>
     const article_Id = document.querySelector("#hiddenId").value;
-    /*
+
     const deleteBtn = document.querySelector("#deleteBtn");
 
 
@@ -161,22 +161,26 @@
         }
     })
 
-     */
+
 
     // 댓글 작성
     const submitBtn = document.querySelector("#commentBtn");
 
     submitBtn.addEventListener("click", function () {
+
         const comment = {
             articleId: article_Id,
             nickname: document.querySelector("#commentUser").value,
             content: document.querySelector("#commentContent").value
         }
 
-        console.log(comment)
+        if (comment.nickname == null) {
+            alert("로그인 후 댓글을 작성할 수 있습니다.");
+        }
 
         const url = `/article/${article_Id}/comment-add`;
         console.log(url);
+
 
         if (comment.content != "") {
             fetch(url, {
@@ -202,12 +206,12 @@
         const url = "/comment-delete/" + comment_id;
         console.log(url);
 
-        const result = confirm("글을 삭제하겠습니까")
+        const result = confirm("댓글을 삭제하겠습니까")
         if (result) {
             fetch(url, {
                 method: "DELETE"
             }).then(response => {
-                const msg = (response.ok) ? "글이 삭제되었습니다" : "오류 발생"
+                const msg = (response.ok) ? "댓글이 삭제되었습니다" : "오류 발생"
                 alert(msg);
 
                 window.location.href = "/article/" + article_Id;
