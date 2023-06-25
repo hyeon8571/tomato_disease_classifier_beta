@@ -142,24 +142,30 @@
 <script>
     const article_Id = document.querySelector("#hiddenId").value;
 
-    const deleteBtn = document.querySelector("#deleteBtn");
+    // 게시글 삭제
+    if (document.querySelector("#deleteBtn") != null) {
+        const deleteBtn = document.querySelector("#deleteBtn");
+
+        deleteBtn.addEventListener("click", function(){
+            const url = "/article/delete/" + article_Id
+
+            const result = confirm("글을 삭제하겠습니까")
+            if(result){
+                fetch(url,{
+                    method: "DELETE",
+                }).then(response => {
+                    const msg = (response.ok) ? "글이 삭제되었습니다" : "오류 발생"
+                    alert(msg);
+
+                    window.location.href ="/article";
+                })
+            }
+        })
+    }
 
 
-    deleteBtn.addEventListener("click", function(){
-        const url = "/article/delete/" + article_Id
 
-        const result = confirm("글을 삭제하겠습니까")
-        if(result){
-            fetch(url,{
-                method: "DELETE",
-            }).then(response => {
-                const msg = (response.ok) ? "글이 삭제되었습니다" : "오류 발생"
-                alert(msg);
 
-                window.location.href ="/article";
-            })
-        }
-    })
 
 
 
@@ -174,34 +180,37 @@
             content: document.querySelector("#commentContent").value
         }
 
-        if (comment.nickname == null) {
+        if (comment.nickname == "") {
             alert("로그인 후 댓글을 작성할 수 있습니다.");
-        }
-
-        const url = `/article/${article_Id}/comment-add`;
-        console.log(url);
-
-
-        if (comment.content != "") {
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(comment),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(response => {
-                const msg = (response.ok) ? "댓글이 등록되었습니다" : "오류 발생"
-                alert(msg);
-
-                window.location.reload();
-            })
         } else {
-            const msg = "공백이 있습니다"
-            alert(msg)
+            const url = `/article/${article_Id}/comment-add`;
+            console.log(url);
+
+
+            if (comment.content != "") {
+                fetch(url, {
+                    method: "POST",
+                    body: JSON.stringify(comment),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(response => {
+                    const msg = (response.ok) ? "댓글이 등록되었습니다" : "오류 발생"
+                    alert(msg);
+
+                    window.location.reload();
+                })
+            } else {
+                const msg = "공백이 있습니다"
+                alert(msg)
+            }
         }
+
+
     })
 
 
+    // 댓글 삭제
     function commentDeleteFunc(comment_id) {
         const url = "/comment-delete/" + comment_id;
         console.log(url);
@@ -225,6 +234,7 @@
         $('#commentUpdateContent').val(content)
     }
 
+    // 댓글 수정
     const commentUpdateBtn = document.querySelector("#commentUpdateBtn");
     commentUpdateBtn.addEventListener("click", function () {
         const comment = {

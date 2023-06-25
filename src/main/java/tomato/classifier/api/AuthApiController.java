@@ -38,9 +38,15 @@ public class AuthApiController {
             return "/auth/signup";
         }
 
-        /*
-        * 아이디 중복, 닉네임 중복 체크
-        * */
+        if (!userRepository.findByLoginId(signupDto.getLoginId()).equals(null)) {
+            bindingResult.rejectValue("loginId", "idDuplication", "이미 존재하는 ID 입니다.");
+            return "/auth/signup";
+        }
+
+        if (!userRepository.findByNickname(signupDto.getNickname()).equals(null)) {
+            bindingResult.rejectValue("nickname", "nicknameDuplication", "이미 존재하는 닉네임 입니다.");
+        }
+
 
         User user = signupDto.convertEntity(signupDto);
 
@@ -87,7 +93,7 @@ public class AuthApiController {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return "redirect:" + request.getHeader("Referer");
     }
 
 
