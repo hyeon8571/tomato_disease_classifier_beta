@@ -67,12 +67,19 @@
             <div class="mb-3" th:object="${loginUser}">
                 <input id="commentUser" class="form-control form-control-sm" type="text"
                        aria-label=".form-control-sm example" value="" th:value="*{nickname}" disabled>
-                <textarea class="form-control form-control-sm" id="commentContent" rows="3"
+                <textarea th:if="${session.loginMember} != null" class="form-control form-control-sm" id="commentContent" rows="3"
                           placeholder="댓글 입력"></textarea>
+                <textarea th:if="${session.loginMember} == null" class="form-control form-control-sm" rows="3"
+                          placeholder="로그인 후 이용가능"></textarea>
             </div>
             <p>
-                <button class="btn btn-primary btn-lg" type="button" id="commentBtn"
+                <button th:if="${session.loginMember} != null" class="btn btn-primary btn-lg" type="button" id="commentBtn"
                         style="font-size:16px; width: 80px; height: 40px; margin-right:1rem">
+                    작성
+                </button>
+
+                <button th:if="${session.loginMember} == null" class="btn btn-secondary btn-lg" type="button"
+                        style="font-size:16px; width: 80px; height: 40px; margin-right:1rem" disabled>
                     작성
                 </button>
             </p>
@@ -180,27 +187,25 @@
             content: document.querySelector("#commentContent").value
         }
 
-        if (comment.nickname == "") {
-            const result = confirm("로그인 후 이용 가능합니다. 로그인 하시겠습니까?")
+        if (comment.content == "") {
+            alert("내용을 입력하세요.")
+        } else {
+            const url = `/article/${article_Id}/comment-add`;
 
-            if (result) {
-                const url = `/article/comment-add/${article_Id}`;
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(comment),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                const msg = (response.ok) ? "댓글이 등록되었습니다" : "오류 발생"
+                alert(msg);
 
-                fetch(url, {
-                    method: "POST",
-                    body: JSON.stringify(comment),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }).then(response => {
-                    const msg = (response.ok) ? "댓글이 등록되었습니다" : "오류 발생"
-                    alert(msg);
-
-                    window.location.reload();
-                })
-
-            }
+                window.location.reload();
+            })
         }
+
     })
 
 

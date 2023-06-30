@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import tomato.classifier.auth.SessionConst;
 import tomato.classifier.dto.LoginDto;
 import tomato.classifier.dto.SignupDto;
 import tomato.classifier.entity.User;
 import tomato.classifier.repository.UserRepository;
+import tomato.classifier.service.AuthService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,6 +25,8 @@ import javax.servlet.http.HttpSession;
 public class AuthApiController {
 
     private final UserRepository userRepository;
+
+    private final AuthService authService;
 
     @PostMapping("/auth/signup")
     public String signup(@Validated @ModelAttribute(name = "signupDto")SignupDto signupDto, BindingResult bindingResult) {
@@ -47,12 +49,7 @@ public class AuthApiController {
             bindingResult.rejectValue("nickname", "nicknameDuplication", "이미 존재하는 닉네임 입니다.");
         }
 
-
-        User user = signupDto.convertEntity(signupDto);
-
-        log.info("user: {}", user);
-
-        userRepository.save(user);
+        authService.signup(signupDto);
 
         return "redirect:/auth/login";
     }
@@ -74,13 +71,7 @@ public class AuthApiController {
             return "/auth/login";
         }
 
-        loginDto.setNickname(user.getNickname());
-
-        loginDto.setRole(user.getRole());
-
-        HttpSession session = request.getSession();
-
-        session.setAttribute(SessionConst.LOGIN_MEMBER, loginDto);
+        authService.login(loginDto, user, request);
 
         return "redirect:" + redirectURL;
     }

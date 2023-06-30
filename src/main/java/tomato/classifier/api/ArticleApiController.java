@@ -9,9 +9,6 @@ import tomato.classifier.dto.ArticleDto;
 import tomato.classifier.entity.Article;
 import tomato.classifier.service.ArticleService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 
 @RestController
 @RequestMapping("/article")
