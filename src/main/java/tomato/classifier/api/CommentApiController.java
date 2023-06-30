@@ -13,7 +13,7 @@ public class CommentApiController {
 
     private  final CommentService commentService;
 
-    @PostMapping("/article/{articleId}/comment-add")
+    @PostMapping("/article/comment-add/{articleId}")
     public ResponseEntity<CommentDto> write(@PathVariable Integer articleId, @RequestBody CommentDto commentDto) {
 
 

@@ -1,7 +1,9 @@
 package tomato.classifier.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import tomato.classifier.auth.SessionConst;
 import tomato.classifier.dto.CommentDto;
 import tomato.classifier.entity.Article;
 import tomato.classifier.entity.Comment;
@@ -10,11 +12,14 @@ import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.CommentRepository;
 import tomato.classifier.repository.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -65,8 +70,9 @@ public class CommentService {
     @Transactional
     public CommentDto update(Integer commentId, CommentDto commentDto) {
 
+
         Comment target = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 id 오류"));
+                .orElseThrow(() -> new IllegalArgumentException("댓글 조회 실패!"));
 
         target.patch(commentDto);
 
@@ -79,7 +85,7 @@ public class CommentService {
     public CommentDto delete(Integer commentId) {
 
         Comment target = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글 id 오류"));
+                .orElseThrow(() -> new IllegalArgumentException("댓글 조회 실패!"));
 
         target.delete();
 

@@ -8,6 +8,8 @@ import tomato.classifier.entity.User;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class ArticleService {
 
     public ArticleDto show(Integer articleId) {
         Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("id err"));
+                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패!"));
 
         ArticleDto articleDto = ArticleDto.convertDto(article);
 
@@ -60,6 +62,7 @@ public class ArticleService {
 
     @Transactional
     public ArticleDto update(Integer articleId, ArticleDto articleDto) {
+
         Article target = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패!"));
 
@@ -72,8 +75,11 @@ public class ArticleService {
 
     @Transactional
     public Article delete(Integer articleId) {
+
         Article target = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("id err"));
+                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패!"));
+
+        String writer = target.getUser().getNickname();
 
         target.delete();
 

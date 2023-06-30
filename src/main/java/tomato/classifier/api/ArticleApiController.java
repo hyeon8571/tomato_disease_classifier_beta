@@ -9,6 +9,9 @@ import tomato.classifier.dto.ArticleDto;
 import tomato.classifier.entity.Article;
 import tomato.classifier.service.ArticleService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 
 @RestController
 @RequestMapping("/article")
@@ -16,9 +19,7 @@ import tomato.classifier.service.ArticleService;
 @Slf4j
 public class ArticleApiController {
 
-
     private final ArticleService articleService;
-
 
     @PostMapping("/add")
     public ResponseEntity<ArticleDto> write(@RequestBody ArticleDto articleDto) {

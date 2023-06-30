@@ -181,13 +181,11 @@
         }
 
         if (comment.nickname == "") {
-            alert("로그인 후 댓글을 작성할 수 있습니다.");
-        } else {
-            const url = `/article/${article_Id}/comment-add`;
-            console.log(url);
+            const result = confirm("로그인 후 이용 가능합니다. 로그인 하시겠습니까?")
 
+            if (result) {
+                const url = `/article/comment-add/${article_Id}`;
 
-            if (comment.content != "") {
                 fetch(url, {
                     method: "POST",
                     body: JSON.stringify(comment),
@@ -200,13 +198,9 @@
 
                     window.location.reload();
                 })
-            } else {
-                const msg = "공백이 있습니다"
-                alert(msg)
+
             }
         }
-
-
     })
 
 
@@ -263,7 +257,7 @@
                 window.location.reload();
             })
         } else {
-            const msg = "공백이 있습니다"
+            const msg = "내용을 입력하세요"
             alert(msg)
         }
     })

@@ -12,6 +12,6 @@ public class SecurityConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(1)
-                .addPathPatterns("/article/add", "/article/edit/**", "/article/delete/**", "/article/**/comment-add", "/comment-edit/**", "/comment-delete/**");
+                .addPathPatterns("/article/add", "/article/edit/**", "/article/delete/**", "/article/comment-add/**", "/comment-edit/**", "/comment-delete/**");
     }
 }
