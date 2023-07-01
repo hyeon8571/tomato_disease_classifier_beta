@@ -20,14 +20,14 @@
 <body>
 <div th:replace="/layout/fragments/nav.html :: nav"></div>
 
-<div class="bg-image text-center shadow-1-strong text-white" id="background"
-     style="flex: 1;background-image: url('/image/articleBg.png'); height:17vh; background-repeat:no-repeat; background-size:cover;">
+<div class="bg-image text-center shadow-1-strong text-black-50" id="background"
+     style="flex: 1;background-image: url('/image/img.jpg'); height:17vh; background-repeat:no-repeat; background-size:cover;">
     <div class="py-5 text-center">
         <h2>자유 게시판</h2>
     </div>
 </div>
 <div id="wrapper">
-    <div class="container" style="height: 60vh">
+    <div class="container" style="height: 40vh">
         <div class="col-md-12">
             <div style="margin-top:2rem;">
                 <button class="btn btn-secondary"
@@ -38,24 +38,19 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>게시글번호</th>
-                    <th>제목</th>
                     <th>작성자</th>
+                    <th>제목</th>
                     <th>작성일</th>
                     <th>댓글수</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="article : ${articles}">
-                    <td>
-                        <a th:href="@{/article/{articleId}(articleId=${article.articleId})}"
-                           th:text="${article.articleId}">게시글 번호</a>
-                    </td>
+                    <td th:text="${article.nickname}">작성자</td>
                     <td>
                         <a th:href="@{/article/{articleId}(articleId=${article.articleId})}"
                            th:text="${article.title}">제목</a>
                     </td>
-                    <td th:text="${article.nickname}">작성자</td>
                     <td th:text="${article.updateTime}">작성일</td>
                     <td th:text="${article.commentCount}">댓글수</td>
                 </tr>

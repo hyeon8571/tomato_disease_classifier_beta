@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import tomato.classifier.dto.LoginDto;
 import tomato.classifier.dto.SignupDto;
 import tomato.classifier.entity.User;
@@ -28,6 +25,7 @@ public class AuthApiController {
 
     private final AuthService authService;
 
+    @ResponseBody
     @PostMapping("/auth/signup")
     public String signup(@Validated @ModelAttribute(name = "signupDto")SignupDto signupDto, BindingResult bindingResult) {
 
@@ -40,18 +38,23 @@ public class AuthApiController {
             return "/auth/signup";
         }
 
-        if (!userRepository.findByLoginId(signupDto.getLoginId()).equals(null)) {
-            bindingResult.rejectValue("loginId", "idDuplication", "이미 존재하는 ID 입니다.");
-            return "/auth/signup";
+        try{
+            if (userRepository.findByLoginId(signupDto.getLoginId()) != null) {
+                bindingResult.rejectValue("loginId", "idDuplication", "이미 존재하는 ID 입니다.");
+                return "/auth/signup";
+            }
+
+            if (!userRepository.findByNickname(signupDto.getNickname()).equals(null)) {
+                bindingResult.rejectValue("nickname", "nicknameDuplication", "이미 존재하는 닉네임 입니다.");
+                return "/auth/signup";
+            }
+        } catch (NullPointerException e) {
+            authService.signup(signupDto);
         }
 
-        if (!userRepository.findByNickname(signupDto.getNickname()).equals(null)) {
-            bindingResult.rejectValue("nickname", "nicknameDuplication", "이미 존재하는 닉네임 입니다.");
-        }
+        String message = "<script>alert('회원가입이 완료되었습니다.');location.href='/auth/login';</script>";
 
-        authService.signup(signupDto);
-
-        return "redirect:/auth/login";
+        return message;
     }
 
     @PostMapping("/auth/login")
@@ -64,12 +67,18 @@ public class AuthApiController {
             return "/auth/login";
         }
 
-        User user = userRepository.findByLoginId(loginDto.getLoginId());
-
-        if ((user == null) || (!user.getPassword().equals(loginDto.getPassword()))) {
+        try {
+            User user = userRepository.findByLoginId(loginDto.getLoginId());
+            if (!user.getPassword().equals(loginDto.getPassword())) {
+                bindingResult.reject("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다.");
+                return "/auth/login";
+            }
+        } catch (NullPointerException e) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return "/auth/login";
         }
+
+        User user = userRepository.findByLoginId(loginDto.getLoginId());
 
         authService.login(loginDto, user, request);
 
