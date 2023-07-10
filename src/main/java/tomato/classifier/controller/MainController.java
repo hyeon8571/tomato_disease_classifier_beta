@@ -6,10 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import tomato.classifier.data.ResultData;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import tomato.classifier.dto.DiseaseDto;
+import tomato.classifier.dto.ResultDto;
 import tomato.classifier.service.MainService;
+
+import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -24,20 +28,14 @@ public class MainController {
         return "main/mainPage";
     }
 
-    @PostMapping("/predict")
-    public String resultView(@RequestBody ResultData data) {
 
-        mainService.save(data);
+    @PostMapping("/input")
+    public String inputImg(@RequestParam("imgFiles") List<MultipartFile> files, Model model) throws IOException {
 
-        return "redirect:/result";
-    }
-
-    @GetMapping("/result")
-    public String resultView(Model model) {
-
-        DiseaseDto result = mainService.result();
-
-        model.addAttribute("tomato", result);
+        mainService.saveImg(files);
+        ResultDto resultDto = mainService.predict();
+        DiseaseDto diseaseDto = mainService.getDiseaseInfo(resultDto);
+        model.addAttribute("result", diseaseDto);
 
         return "main/resultPage";
     }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tomato.classifier.data.ResultData;
 import tomato.classifier.entity.Disease;
 
 @NoArgsConstructor
@@ -24,13 +23,13 @@ public class DiseaseDto {
     private Integer prob;
 
 
-    public static DiseaseDto convertDto(Disease target, ResultData data) {
+    public static DiseaseDto convertDto(Disease target, Integer prob) {
         return new DiseaseDto(
                 target.getId(),
                 target.getD_name(),
                 target.getSrc(),
                 target.getSolution(),
-                data.getProb()
+                prob
         );
     }
 }

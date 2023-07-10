@@ -39,10 +39,10 @@
             <h3>다양한 각도로 한 잎을 찍어주세요</h3></div>
         <div class="container">
             <div class="image-upload">
-                <form id="submitForm" enctype="multipart/form-data">
+                <form method="post" th:action="@{/input}" id="submitForm" enctype="multipart/form-data">
                     <label for="files" class="form-label">Multiple files input example</label>
-                    <input class="form-control" type="file" id="files" multiple accept=".jpeg, .jpg, .png">
-                    <button id="file-send" class="btn btn-light" type="button">전송</button>
+                    <input class="form-control" type="file" id="files" name="imgFiles" multiple accept=".jpeg, .jpg, .png">
+                    <button id="file-send-btn" class="btn btn-light" type="submit">전송</button>
                 </form>
             </div>
             <div class="image-show" id="image-show"></div>
@@ -61,43 +61,28 @@
         $("#div_load_image").hide();
     }
 
-    const submitButton = document.querySelector("#file-send")
-    const uploadFiles  = document.querySelector("#files")
-
-    const formData = new FormData();
-
     function loading() {
         $("#background").css({ "opacity":"0.7"})
         $("#div_load_image").show();
     }
 
-    const url = "http://127.0.0.1:5000/input"
 
-    submitButton.addEventListener('click', function() {
+    const submitForm = document.querySelector("#submitForm")
+    const submitButton = document.querySelector("#file-send-btn")
+    const uploadFiles = document.querySelector("#files")
 
-
-        loading();
+    submitForm.addEventListener('submit', function (event) {
+        event.preventDefault();
 
         const fLength = uploadFiles.files.length
 
-
-        if(fLength != 5) {
-            alert("이미지는 5장을 선택해야 합니다.")
+        if(fLength === 5) {
+            $(this).unbind('submit').submit();
+            $("#background").css({ "opacity":"0.7"});
+            $("#div_load_image").show();
+            submitButton.disabled = true;
         } else {
-            for (let i = 0; i < 5; i++) {
-                formData.append("files", uploadFiles.files[i]);
-            }
-            $.ajax({
-                url: url,
-                method: "POST",
-                data: formData,
-                dataType: 'json',
-                processData: false,
-                contentType: false,
-            }).done(response => {
-                window.location.href = "/result"
-            })
-
+            alert("이미지 파일 5장을 선택해주세요.")
         }
     })
 </script>

@@ -1,34 +1,75 @@
 package tomato.classifier.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import tomato.classifier.data.ResultData;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import tomato.classifier.dto.DiseaseDto;
+import tomato.classifier.dto.ResultDto;
 import tomato.classifier.entity.Disease;
 import tomato.classifier.repository.DiseaseRepository;
-import tomato.classifier.repository.TomatoRepository;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MainService {
 
-    private final TomatoRepository tomatoRepository;
-
     private final DiseaseRepository diseaseRepository;
 
-    public void save(ResultData data) {
-        tomatoRepository.save(data);
+    private final ObjectMapper objectMapper;
+
+    private final RestTemplate restTemplate;
+
+    @Value("/Users/wonseunghyeon/Desktop/plantvillage/forTest/5_dest/Target/")
+    private String fileDir;
+
+    @Value("http://127.0.0.1:5000/predict")
+    private String url;
+
+    public void saveImg(List<MultipartFile> files) throws IOException {
+/*
+        if(!files.isEmpty()) {
+            for(MultipartFile file : files) {
+                String filePath = fileDir + file.getOriginalFilename();
+
+                file.transferTo(new File(filePath));
+            }
+        }
+
+ */
+
+        files.stream()
+                .filter(file -> !file.isEmpty())
+                .forEach(file -> {
+                    String filePath = fileDir + file.getOriginalFilename();
+
+                    try {
+                        file.transferTo(new File(filePath));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                });
     }
 
-    public DiseaseDto result() {
+    public ResultDto predict() throws IOException {
 
-        ResultData data = tomatoRepository.find();
-
-        Disease target = diseaseRepository.findById(data.getName())
-                .orElseThrow(() -> new IllegalArgumentException("질병 조회 실패"));
-
-        DiseaseDto resultDto = DiseaseDto.convertDto(target, data);
+        String response = restTemplate.getForObject(url, String.class);
+        ResultDto resultDto = objectMapper.readValue(response, ResultDto.class);
 
         return resultDto;
+    }
+
+    public DiseaseDto getDiseaseInfo(ResultDto resultDto) {
+
+        Disease target = diseaseRepository.findById(resultDto.getName())
+                .orElseThrow(() -> new IllegalArgumentException("질병 조회 실패"));
+
+        return DiseaseDto.convertDto(target, resultDto.getProb());
     }
 }
