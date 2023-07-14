@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 public class SignupDto {
 
     @NotEmpty(message = "아이디를 입력하세요.")
-    @Pattern(regexp = "[a-zA-Z0-9]{2,9}", message = "아이디는 영문, 숫자만 가능하며 2 ~ 10자리까지 가능합니다.")
+    @Pattern(regexp = "[a-zA-Z0-9]{6,10}", message = "아이디는 영문, 숫자만 가능하며 6 ~ 10자리까지 가능합니다.")
     private String loginId;
 
     @NotEmpty(message = "비밀번호를 입력하세요.")

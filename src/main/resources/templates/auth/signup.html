@@ -29,7 +29,7 @@
         <h2>회원가입</h2>
     </div>
 
-    <form th:action="@{/auth/signup}" th:method="post" th:object="${signupDto}">
+    <form th:action="@{/auth/signup}" th:method="post" th:object="${signupDto}" id="signupForm">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전역 오류 메시지</p>
         </div>

@@ -25,7 +25,6 @@ public class AuthApiController {
 
     private final AuthService authService;
 
-    @ResponseBody
     @PostMapping("/auth/signup")
     public String signup(@Validated @ModelAttribute(name = "signupDto")SignupDto signupDto, BindingResult bindingResult) {
 
@@ -38,23 +37,19 @@ public class AuthApiController {
             return "/auth/signup";
         }
 
-        try{
-            if (userRepository.findByLoginId(signupDto.getLoginId()) != null) {
-                bindingResult.rejectValue("loginId", "idDuplication", "이미 존재하는 ID 입니다.");
-                return "/auth/signup";
-            }
-
-            if (!userRepository.findByNickname(signupDto.getNickname()).equals(null)) {
-                bindingResult.rejectValue("nickname", "nicknameDuplication", "이미 존재하는 닉네임 입니다.");
-                return "/auth/signup";
-            }
-        } catch (NullPointerException e) {
-            authService.signup(signupDto);
+        if (userRepository.findByLoginId(signupDto.getLoginId()) != null) {
+            bindingResult.rejectValue("loginId", "idDuplication", "이미 존재하는 ID 입니다.");
+            return "/auth/signup";
         }
 
-        String message = "<script>alert('회원가입이 완료되었습니다.');location.href='/auth/login';</script>";
+        if (userRepository.findByNickname(signupDto.getNickname()) != null) {
+            bindingResult.rejectValue("nickname", "nicknameDuplication", "이미 존재하는 닉네임 입니다.");
+            return "/auth/signup";
+        }
 
-        return message;
+        authService.signup(signupDto);
+
+        return "/message/signupMessage";
     }
 
     @PostMapping("/auth/login")
