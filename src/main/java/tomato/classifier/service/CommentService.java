@@ -3,7 +3,6 @@ package tomato.classifier.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import tomato.classifier.auth.SessionConst;
 import tomato.classifier.dto.CommentDto;
 import tomato.classifier.entity.Article;
 import tomato.classifier.entity.Comment;
@@ -11,9 +10,7 @@ import tomato.classifier.entity.User;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.CommentRepository;
 import tomato.classifier.repository.UserRepository;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;

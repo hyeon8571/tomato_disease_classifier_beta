@@ -42,7 +42,6 @@ public class MainService {
         }
 
  */
-
         files.stream()
                 .filter(file -> !file.isEmpty())
                 .forEach(file -> {
