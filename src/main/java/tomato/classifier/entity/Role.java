@@ -1,9 +1,12 @@
 package tomato.classifier.entity;
 
-public enum Role {
-    USER("ROLE_USER"), MANAGER("ROLE_MANAGER"), ADMIN("ROLE_ADMIN");
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    Role(String value) {this.value = value;}
+@AllArgsConstructor
+@Getter
+public enum Role {
+    USER("일반이용자"), MANAGER("매니저"), ADMIN("관리자");
 
     public String value;
 }

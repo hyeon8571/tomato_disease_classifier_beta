@@ -8,8 +8,7 @@ import tomato.classifier.entity.User;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.UserRepository;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
