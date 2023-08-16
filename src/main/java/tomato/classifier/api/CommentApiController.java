@@ -21,7 +21,7 @@ public class CommentApiController {
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
-    @PatchMapping("/comment-edit/{commentId}")
+    @PatchMapping("/cmment-edit/{commentId}")
     public ResponseEntity<CommentDto> edit(@PathVariable Integer commentId, @RequestBody CommentDto commentDto) {
 
         CommentDto updateDto = commentService.update(commentId, commentDto);

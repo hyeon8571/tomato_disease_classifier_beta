@@ -45,23 +45,18 @@
     <span class="card" style="height: 350px">
 
         <div class="d-flex justify-content-center">
-            <form action="/auth/login" th:action th:object="${loginDto}" th:method="post">
+            <form action="/api/login" th:action th:method="post">
                 <div class="form-group mb-3" style="margin-bottom: 2rem; margin-top: 3rem">
-                    <input placeholder="아이디" th:field="*{loginId}" type="text" name="loginId" id="loginId" class="form-control"
+                    <input placeholder="아이디" type="text" name="loginId" id="loginId" class="form-control"
                         style="height: 60px; width:500px">
-                    <div class="field-error" th:errors="*{loginId}">아이디 오류 메시지</div>
                 </div>
                 <div class="form-group mb-3" style="margin-bottom: 2rem">
                     <input placeholder="비밀번호" name="password" type="password" id="password" class="form-control"
                         style="height: 60px; width:500px">
-                    <div class="field-error" th:errors="*{password}">비밀번호 오류 메시지</div>
-                </div>
-                <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger" style="height: 3.5rem">
-                    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
                 </div>
                 <div style="display:inline;">
-                    <button class="btn btn-primary" type="submit"
-                        style="height: 60px; width:500px; background-color: forestgreen; font-size: 20px">로그인</button>
+                    <button class="btn btn-primary" type="button"
+                        style="height: 60px; width:500px; background-color: forestgreen; font-size: 20px" id="submitBtn">로그인</button>
                 </div>
             </form>
         </div>
@@ -73,7 +68,7 @@
         <button class="btn btn-link" style="color: gray" th:onclick="|location.href='@{/auth/register}'|" type="button">
             비밀번호 찾기
         </button>
-        <button class="btn btn-link" style="color: gray" th:onclick="|location.href='@{/signupForm}'|" type="button">
+        <button class="btn btn-link" style="color: gray" th:onclick="|location.href='@{/signup}'|" type="button">
             회원가입
         </button>
     </div>
@@ -83,3 +78,29 @@
 
 </body>
 </html>
+
+<script>
+    const submitBtn = document.querySelector("#submitBtn");
+
+    submitBtn.addEventListener('click', function() {
+        const loginReqDto = {
+            loginId : document.querySelector('#loginId').value,
+            password : document.querySelector('#password').value
+        }
+
+        const url = '/api/login';
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify(loginReqDto),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            if (!response.ok) {
+                alert("아이디 또는 비밀번호를 확인해주세요.");
+            } else {
+                alert("로그인 성공");
+            }
+        })
+    })
+</script>

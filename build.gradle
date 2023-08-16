@@ -45,6 +45,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
     implementation group: 'org.webjars', name: 'jquery', version: '3.6.0'
 

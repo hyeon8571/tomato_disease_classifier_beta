@@ -55,7 +55,7 @@ public class CommentService {
 
         String nickname = commentDto.getNickname();
 
-        User user = userRepository.findByNickname(nickname);
+        User user = userRepository.findByNickname(nickname).orElseThrow(null);
 
         Comment comment = Comment.convertEntity(commentDto, article, user);
 

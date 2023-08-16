@@ -1,21 +1,24 @@
 package tomato.classifier.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import tomato.classifier.dto.LoginDto;
-import tomato.classifier.dto.SignupDto;
+
+
+import static tomato.classifier.dto.user.UserReqDto.*;
+
 
 @Controller
 public class AuthController {
 
-    @GetMapping("/auth/login")
-    public String loginForm(@ModelAttribute(name = "loginDto") LoginDto loginDto) {
+    @GetMapping("/login")
+    public String loginForm() {
         return "auth/login";
     }
 
-    @GetMapping("/signupForm")
-    public String signupForm(@ModelAttribute(name = "signupDto") SignupDto signupDto) {
+    @GetMapping("/signup")
+    public String signupForm(@ModelAttribute JoinReqDto joinReqDto) {
         return "auth/signup";
     }
 

@@ -50,7 +50,7 @@ public class ArticleService {
 
         String nickname = articleDto.getNickname();
 
-        User user = userRepository.findByNickname(nickname);
+        User user = userRepository.findByNickname(nickname).orElseThrow(null);
 
         Article article = Article.convertEntity(articleDto, user);
 

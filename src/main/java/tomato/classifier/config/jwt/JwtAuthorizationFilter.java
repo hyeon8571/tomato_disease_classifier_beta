@@ -1,4 +1,4 @@
-package tomato.classifier.config.auth;
+package tomato.classifier.config.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import tomato.classifier.config.auth.LoginUser;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

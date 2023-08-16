@@ -35,6 +35,12 @@ public class UserReqDto {
         @Size(min = 4, max = 20)
         private String password;
 
+        // 길이 4~20
+        @NotEmpty(message = "비밀번호 확인을 위해 입력하세요.")
+        @Size(min = 4, max = 20)
+        private String password2;
+
+
         // 이메일 형식
         @NotEmpty
         @Pattern(regexp = "^[a-zA-Z0-9]{2,10}@[a-zA-Z0-9]{2,6}\\.[a-zA-Z]{2,3}$", message = "이메일 형식으로 작성해주세요")
