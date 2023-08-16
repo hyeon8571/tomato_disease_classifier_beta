@@ -34,4 +34,5 @@ Densenet + Flask + SpringBoot를 활용한 토마토 잎 질병 분류 웹
 - 마이페이지 
 - 게시글 추천/비추천
 - 페이징
+- REST API
 
