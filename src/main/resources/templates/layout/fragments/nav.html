@@ -9,6 +9,9 @@
         .bg-light {
             background-color: rgb(255, 255, 255);
         }
+         .hidden {
+             display: none;
+         }
     </style>
 </head>
 <body>
@@ -34,21 +37,21 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    <th:block sec:authorize="isAnonymous()">
+                    <block id="loginBtn" class="hidden">
                         <li class="nav-item" style="margin-right: 0.7rem;">
                             <a class="link-primary" href="/login" style="text-decoration: none;">Login</a>
                         </li>
-                    </th:block>
-                    <th:block sec:authorize="isAuthenticated()">
+                    </block>
+                    <block id="myPageBtn" class="hidden">
                         <li class="nav-item" style="margin-right: 0.7rem;">
                             <a href="/mypage" class="link-success" style="text-decoration: none">MyPage</a>
                         </li>
-                    </th:block>
-                    <th:block sec:authorize="isAuthenticated()">
+                    </block>
+                    <block id="logoutBtn" class="hidden">
                         <li class="nav-item" style="margin-right: 0.7rem; float: right">
-                            <a href="/auth/logout" class="link-danger" style="text-decoration: none">Logout</a>
+                            <a href="/api/logout" class="link-danger" style="text-decoration: none">Logout</a>
                         </li>
-                    </th:block>
+                    </block>
                 </ul>
             </div>
 
@@ -57,3 +60,4 @@
 </div>
 </body>
 </html>
+

@@ -18,6 +18,7 @@ public class CustomResponseUtil {
             String responseBody = om.writeValueAsString(responseDto); // json으로 변경
             response.setContentType("application/json; charset=utf-8");
             response.setStatus(200);
+            response.getWriter().println(responseBody);
         } catch (Exception e) {
             log.error("서버 파싱 에러");
         }
