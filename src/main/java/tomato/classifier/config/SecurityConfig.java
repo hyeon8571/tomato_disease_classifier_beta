@@ -2,6 +2,7 @@ package tomato.classifier.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +15,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import tomato.classifier.config.jwt.JwtAuthenticationFilter;
 import tomato.classifier.config.jwt.JwtAuthorizationFilter;
+import tomato.classifier.entity.Role;
 import tomato.classifier.util.CustomResponseUtil;
 
 
@@ -63,12 +65,13 @@ public class SecurityConfig {
 
         // 권한 실패
         http.exceptionHandling().accessDeniedHandler((request, response, e)->{
-            CustomResponseUtil.fail(response, "권환이 없습니다.", HttpStatus.FORBIDDEN);
+            CustomResponseUtil.fail(response, "권한이 없습니다.", HttpStatus.FORBIDDEN);
         });
 
         http.authorizeRequests()
                 .antMatchers("/api/article/*").authenticated()
                 .antMatchers("/api/comment/*").authenticated()
+                .antMatchers(HttpMethod.GET, "/article/writeForm").authenticated()
                 //.antMatchers("/api/admin/**").hasRole(""+ Role.ADMIN) // 최근 공식문서에서는 ROLE_ 안붙여도 됨
                 .anyRequest().permitAll();
 

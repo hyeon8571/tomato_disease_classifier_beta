@@ -15,9 +15,12 @@ import tomato.classifier.util.CustomResponseUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import static tomato.classifier.dto.user.UserReqDto.*;
 import static tomato.classifier.dto.user.UserResDto.*;
@@ -71,9 +74,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("디버그 : successfulAuthentication 호출됨");
         LoginUser loginUser = (LoginUser) authResult.getPrincipal();
         String jwtToken = JwtProcess.create(loginUser);
-        response.addHeader(JwtVO.HEADER, jwtToken);
+        //response.addHeader(JwtVO.HEADER, jwtToken);
+        response.addCookie(addCookie(jwtToken));
 
         LoginResDto loginResDto = new LoginResDto(loginUser.getUser());
         CustomResponseUtil.success(response, loginResDto);
+    }
+
+    private Cookie addCookie(String jwtToken) throws UnsupportedEncodingException {
+        String cookieValue = URLEncoder.encode(jwtToken, "utf-8"); // 세미콜론, 콤마, 이콜 사인, 그리고 공백은 쿠키값으로 이용될 수 없다. 인코딩 필요
+        Cookie cookie = new Cookie(JwtVO.HEADER, cookieValue);
+        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        return cookie;
     }
 }

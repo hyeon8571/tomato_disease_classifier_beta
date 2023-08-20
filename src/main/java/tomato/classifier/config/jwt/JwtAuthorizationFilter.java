@@ -1,7 +1,5 @@
 package tomato.classifier.config.jwt;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,12 +9,16 @@ import tomato.classifier.config.auth.LoginUser;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /*
- * 모든 주소에서 동작함 (토큰 검증), SecurityConfig에 인증이 필요하다고 등록된 url 내에서 모든 주소
+ * 모든 주소에서 동작함 (토큰 검증)
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -29,9 +31,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        if (isHeaderVerify(request, response)) {
+        if (isCookieVerify(request, response)) {
             // 토큰이 존재함
-            String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+            Cookie[] cookies = request.getCookies();
+            String value = cookies[0].getValue();
+            String jwtToken = URLDecoder.decode(value, "utf-8");
+
+            String token = jwtToken.replace(JwtVO.TOKEN_PREFIX, "");
             LoginUser loginUser = JwtProcess.verify(token);
 
             // 임시 세션 (UserDetails 타입 or username)
@@ -42,12 +48,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-    private boolean isHeaderVerify(HttpServletRequest request, HttpServletResponse response) {
-        String header = request.getHeader(JwtVO.HEADER);
-        if (header == null || !header.startsWith(JwtVO.TOKEN_PREFIX)) {
+    private boolean isCookieVerify(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        try {
+            Cookie[] cookies = request.getCookies();
+            String value = cookies[0].getValue();
+            String jwtToken = URLDecoder.decode(value, "utf-8");
+            if (jwtToken == null || !jwtToken.startsWith(JwtVO.TOKEN_PREFIX)) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (NullPointerException e) {
             return false;
-        } else {
-            return true;
         }
     }
 }

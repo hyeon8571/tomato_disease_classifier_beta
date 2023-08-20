@@ -99,8 +99,6 @@
             if (!response.ok) {
                 alert("아이디 또는 비밀번호를 확인해주세요.");
             } else {
-                const jwtToken = response.headers.get("Authorization");
-                localStorage.setItem('jwtToken', jwtToken);
                 window.location.href = "/"
             }
         })

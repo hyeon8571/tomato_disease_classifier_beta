@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import tomato.classifier.config.jwt.JwtVO;
 import tomato.classifier.repository.UserRepository;
 import tomato.classifier.service.AuthService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import static tomato.classifier.dto.user.UserReqDto.*;
@@ -45,4 +48,13 @@ public class AuthApiController {
 
         return "/message/signupMessage";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        Cookie cookie = authService.expireCookie(JwtVO.HEADER);
+        System.out.println(cookie.getName());
+        response.addCookie(cookie);
+        return "redirect:/";
+    }
+
 }

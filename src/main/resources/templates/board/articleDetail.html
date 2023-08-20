@@ -36,7 +36,7 @@
         <tr th:object="${loginUser}">
             <th scope="col"><h1 th:text="${article.title}">title</h1></th>
             <td>
-                <button th:if="${session.loginMember} != null and ${session.loginMember.nickname} == ${article.nickname}"
+                <button th:if="*{} != null and ${session.loginMember.nickname} == ${article.nickname}"
                         style="display: inline-block; float: right; margin-right: 0.5rem"
                         type="button" class="btn btn-danger" id="deleteBtn">삭제
                 </button>
