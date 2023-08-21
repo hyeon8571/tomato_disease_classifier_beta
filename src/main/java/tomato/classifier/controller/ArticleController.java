@@ -2,6 +2,7 @@ package tomato.classifier.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.UserRepository;
 import tomato.classifier.service.ArticleService;
 import tomato.classifier.service.CommentService;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +49,6 @@ public class ArticleController {
 
         String loginId = loginUser.getUsername();
 
-        // 받아온 아이디를 이용해서 유저 디티오
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new CustomApiException("유저 조회를 실패했습니다."));
 

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 /*
  * 모든 주소에서 동작함 (토큰 검증)
@@ -31,12 +30,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        if (isCookieVerify(request, response)) {
-            // 토큰이 존재함
-            Cookie[] cookies = request.getCookies();
-            String value = cookies[0].getValue();
-            String jwtToken = URLDecoder.decode(value, "utf-8");
+        String jwtToken = isCookieVerify(request);
 
+        if (!jwtToken.equals("")) {
+            // 토큰이 존재함
             String token = jwtToken.replace(JwtVO.TOKEN_PREFIX, "");
             LoginUser loginUser = JwtProcess.verify(token);
 
@@ -48,18 +45,31 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-    private boolean isCookieVerify(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+    private String isCookieVerify(HttpServletRequest request) throws UnsupportedEncodingException {
+
         try {
             Cookie[] cookies = request.getCookies();
-            String value = cookies[0].getValue();
-            String jwtToken = URLDecoder.decode(value, "utf-8");
-            if (jwtToken == null || !jwtToken.startsWith(JwtVO.TOKEN_PREFIX)) {
-                return false;
-            } else {
-                return true;
+
+            for (Cookie cookie : cookies) {
+                String name = cookie.getName();
+                String value = cookie.getValue();
+
+                if (name.equals(JwtVO.HEADER)) {
+                    String jwtToken = URLDecoder.decode(value, "utf-8");
+                    if (jwtToken == "" || !jwtToken.startsWith(JwtVO.TOKEN_PREFIX)) {
+                        return "";
+                    } else {
+                        return jwtToken;
+                    }
+                } else {
+                    return "";
+                }
             }
+            return "";
         } catch (NullPointerException e) {
-            return false;
+            return "";
         }
     }
+
+
 }

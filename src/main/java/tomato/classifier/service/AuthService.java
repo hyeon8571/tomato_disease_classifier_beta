@@ -28,6 +28,7 @@ public class AuthService {
     public Cookie expireCookie(String tokenKey) {
         Cookie cookie = new Cookie(tokenKey, null);
         cookie.setMaxAge(0);
+        cookie.setPath("/");
         return cookie;
     }
 

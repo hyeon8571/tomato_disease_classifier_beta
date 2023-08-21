@@ -52,8 +52,6 @@ public class SecurityConfig {
         http.httpBasic().disable();
 
 
-
-
         // 필터 적용
         http.apply(new CustomSecurityFilterManager());
 
