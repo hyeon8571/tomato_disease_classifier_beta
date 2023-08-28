@@ -65,7 +65,7 @@
 
         console.log(article)
 
-        const url = "/article/add";
+        const url = "/api/article";
         fetch(url,{
             method: "POST",
             body : JSON.stringify(article),
@@ -73,9 +73,9 @@
               "Content-Type": "application/json"
             }
         }).then(response => {
-          const msg = (response.ok) ? "글이 등록되었습니다" : "오류 발생"
+          console.log(response.status)
+          const msg = (response.status == 201) ? "글이 등록되었습니다" : "오류 발생"
           alert(msg);
-
           window.location.href ="/article";
         })
     })

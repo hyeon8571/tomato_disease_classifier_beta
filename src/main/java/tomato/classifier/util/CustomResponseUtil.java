@@ -17,7 +17,6 @@ public class CustomResponseUtil {
             ResponseDto<?> responseDto = new ResponseDto<>(1, "로그인 성공", dto);
             String responseBody = om.writeValueAsString(responseDto); // json으로 변경
             response.setContentType("application/json; charset=utf-8");
-            response.setStatus(200);
             response.getWriter().println(responseBody);
         } catch (Exception e) {
             log.error("서버 파싱 에러");
@@ -26,15 +25,16 @@ public class CustomResponseUtil {
 
     public static void fail(HttpServletResponse response, String msg, HttpStatus httpStatus) {
         try {
-            ObjectMapper om = new ObjectMapper();
-            ResponseDto<?> responseDto = new ResponseDto<>(-1, msg, null);
-            String responseBody = om.writeValueAsString(responseDto); // json으로 변경
-            response.setContentType("application/json; charset=utf-8");
-            response.setStatus(httpStatus.value());
-            response.sendRedirect("/");
+//            ObjectMapper om = new ObjectMapper();
+//            ResponseDto<?> responseDto = new ResponseDto<>(-1, msg, null);
+//            String responseBody = om.writeValueAsString(responseDto); // json으로 변경, 지금은 페이지를 리턴해주므로 생략
+//            response.setContentType("application/json; charset=utf-8");
+//            response.getWriter().println(responseBody);
+            response.sendRedirect("/err-page");
         } catch (Exception e) {
             log.error("서버 파싱 에러");
         }
     }
+
 
 }

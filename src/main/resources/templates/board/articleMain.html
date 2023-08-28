@@ -20,28 +20,31 @@
 <body>
 <div th:replace="/layout/fragments/nav.html :: nav"></div>
 
-<div class="bg-image text-center shadow-1-strong text-black-50" id="background"
-     style="flex: 1;background-image: url('/image/img.jpg'); height:17vh; background-repeat:no-repeat; background-size:cover;">
+<div class="bg-image text-center shadow-1-strong text-black-100" id="background"
+     style="flex: 1;background-image: url(''); height:10vh; background-repeat:no-repeat; background-size:cover;">
     <div class="py-5 text-center">
-        <h2>자유 게시판</h2>
+        <h1>자유 게시판</h1>
     </div>
 </div>
 <div id="wrapper">
-    <div class="container" style="height: 40vh">
+    <div class="container" style="height: 40vh; width: 75%">
         <div class="col-md-12">
-            <div style="margin-top:2rem;">
+            <div style="margin-top:3rem;">
                 <button class="btn btn-secondary"
-                        th:onclick="|location.href='@{/article/writeForm}'|" type="button" style="float: right;">
+                        th:onclick="|location.href='@{/article/writeForm}'|" type="button" style="float: right; margin-bottom: 1rem">
                     글쓰기
                 </button>
             </div>
             <table class="table">
-                <thead>
+                <thead class="table-light">
                 <tr>
                     <th>작성자</th>
                     <th>제목</th>
                     <th>작성일</th>
-                    <th>댓글수</th>
+                    <th><img src="/image/board/comment2.png" alt="댓글수"
+                             style="width: 1.5rem; height: 1.5rem;"></th>
+                    <th><img src="/image/board/good.png" alt="좋아요"
+                             style="width: 1.5rem; height: 1.5rem;"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,7 +55,8 @@
                            th:text="${article.title}">제목</a>
                     </td>
                     <td th:text="${article.updateTime}">작성일</td>
-                    <td th:text="${article.commentCount}">댓글수</td>
+                    <td th:text="'&nbsp;'+${article.commentCount}">댓글수</td>
+                    <td>&nbsp;30</td>
                 </tr>
                 </tbody>
             </table>

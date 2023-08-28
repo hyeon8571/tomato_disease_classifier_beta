@@ -96,11 +96,8 @@
                 "Content-Type": "application/json"
             }
         }).then(response => {
-            if (!response.ok) {
-                alert("아이디 또는 비밀번호를 확인해주세요.");
-            } else {
-                window.location.href = "/"
-            }
+            console.log(response)
+
         })
     })
 </script>

@@ -15,7 +15,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import tomato.classifier.config.jwt.JwtAuthenticationFilter;
 import tomato.classifier.config.jwt.JwtAuthorizationFilter;
-import tomato.classifier.entity.Role;
 import tomato.classifier.util.CustomResponseUtil;
 
 

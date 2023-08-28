@@ -36,14 +36,14 @@
         <tr th:object="${loginUser}">
             <th scope="col"><h1 th:text="${article.title}">title</h1></th>
             <td>
-                <button th:if="*{} != null and ${session.loginMember.nickname} == ${article.nickname}"
+                <button th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${article.nickname}"
                         style="display: inline-block; float: right; margin-right: 0.5rem"
                         type="button" class="btn btn-danger" id="deleteBtn">삭제
                 </button>
-                <button th:if="${session.loginMember} != null and ${session.loginMember.nickname} == ${article.nickname}"
+                <button th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${article.nickname}"
                         style="display: inline-block; float: right;margin-right: 0.2rem" type="button"
                         class="btn btn-primary"
-                        th:onclick="|location.href='@{/article/edit(articleId=${article.articleId})}'|">수정
+                        th:onclick="|location.href='@{/article/{articleId}/editForm(articleId = ${article.articleId})}'|">수정
                 </button>
             </td>
         </tr>
@@ -67,18 +67,18 @@
             <div class="mb-3" th:object="${loginUser}">
                 <input id="commentUser" class="form-control form-control-sm" type="text"
                        aria-label=".form-control-sm example" value="" th:value="*{nickname}" disabled>
-                <textarea th:if="${session.loginMember} != null" class="form-control form-control-sm" id="commentContent" rows="3"
+                <textarea th:if="${loginUser.nickname} != null" class="form-control form-control-sm" id="commentContent" rows="3"
                           placeholder="댓글 입력"></textarea>
-                <textarea th:if="${session.loginMember} == null" class="form-control form-control-sm" rows="3"
+                <textarea th:if="${loginUser.nickname} == null" class="form-control form-control-sm" rows="3"
                           placeholder="로그인 후 이용가능"></textarea>
             </div>
             <p>
-                <button th:if="${session.loginMember} != null" class="btn btn-primary btn-lg" type="button" id="commentBtn"
+                <button th:if="${loginUser.nickname} != null" class="btn btn-primary btn-lg" type="button" id="commentBtn"
                         style="font-size:16px; width: 80px; height: 40px; margin-right:1rem">
                     작성
                 </button>
 
-                <button th:if="${session.loginMember} == null" class="btn btn-secondary btn-lg" type="button"
+                <button th:if="${loginUser.nickname} == null" class="btn btn-secondary btn-lg" type="button"
                         style="font-size:16px; width: 80px; height: 40px; margin-right:1rem" disabled>
                     작성
                 </button>
@@ -94,7 +94,7 @@
                 <td th:text="${comment.content}" th:class="col-sm-7" style="word-break: break-all">내용</td>
                 <td th:class="col-md-1">
                     <div>
-                        <button th:if="${session.loginMember} != null and ${session.loginMember.nickname} == ${comment.nickname}" type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                        <button th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${comment.nickname}" type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
@@ -154,7 +154,7 @@
         const deleteBtn = document.querySelector("#deleteBtn");
 
         deleteBtn.addEventListener("click", function(){
-            const url = "/article/delete/" + article_Id
+            const url = "api/article/" + article_Id
 
             const result = confirm("글을 삭제하겠습니까")
             if(result){
@@ -169,10 +169,6 @@
             }
         })
     }
-
-
-
-
 
 
 

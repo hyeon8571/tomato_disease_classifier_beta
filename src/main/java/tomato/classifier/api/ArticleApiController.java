@@ -6,40 +6,41 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tomato.classifier.dto.ArticleDto;
+import tomato.classifier.dto.ResponseDto;
 import tomato.classifier.entity.Article;
 import tomato.classifier.service.ArticleService;
 
 
 @RestController
-@RequestMapping("/article")
+@RequestMapping("/api/article")
 @RequiredArgsConstructor
 @Slf4j
 public class ArticleApiController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/add")
-    public ResponseEntity<ArticleDto> write(@RequestBody ArticleDto articleDto) {
+    @PostMapping()
+    public ResponseEntity<?> write(@RequestBody ArticleDto articleDto) {
 
-        ArticleDto created = articleService.create(articleDto);
+        ArticleDto createdDto = articleService.create(articleDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(created);
+        return new ResponseEntity<>(new ResponseDto<>(1, "계시글 등록 완료", createdDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/edit/{articleId}")
-    public ResponseEntity<ArticleDto> edit(@PathVariable Integer articleId, @RequestBody ArticleDto articleDto) {
+    @PatchMapping("/{articleId}")
+    public ResponseEntity<?> edit(@PathVariable Integer articleId, @RequestBody ArticleDto articleDto) {
 
         ArticleDto updatedDto = articleService.update(articleId, articleDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(updatedDto);
+        return new ResponseEntity<>(new ResponseDto<>(1, "계시글 수정 완료", updatedDto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{articleId}")
-    public ResponseEntity<Article> delete(@PathVariable Integer articleId) {
+    @DeleteMapping("/{articleId}")
+    public ResponseEntity<?> delete(@PathVariable Integer articleId) {
 
         Article deleted = articleService.delete(articleId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(deleted);
+        return new ResponseEntity<>(new ResponseDto<>(1, "계시글 삭제 완료", deleted), HttpStatus.OK);
     }
 }
 

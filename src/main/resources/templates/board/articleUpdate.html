@@ -11,11 +11,7 @@
 
 
     <style>
-        footer{
-            height: 205px;
-            position : relative;
-            transform : translateY(-100%);
-        }
+
     </style>
 </head>
 <body>
@@ -32,9 +28,9 @@
                th:value="${article.articleId}">
 
         <div class="mb-3">
-            <label for="writer">작성자</label>
-            <input type="text" class="form-control" id="writer"
-                   th:value="${article.articleWriter}" readonly>
+            <label for="nickname">작성자</label>
+            <input type="text" class="form-control" id="nickname"
+                   th:value="${article.nickname}" readonly>
         </div>
         <div class="mb-3">
             <label for="title">제목</label>
@@ -67,6 +63,7 @@
         </div>
     </form>
 </div>
+
 <footer th:replace="/layout/fragments/footer.html :: footer"></footer>
 
 </body>
@@ -78,15 +75,14 @@
     submitBtn.addEventListener("click", function(){
         const article = {
             articleId : document.querySelector("#articleId").value,
-            articleWriter : document.querySelector("#writer").value,
+            nickname : document.querySelector("#nickname").value,
             title : document.querySelector("#title").value,
             content : document.querySelector("#content").value
         }
 
         console.log(article)
 
-        const url = "/article/edit/"+ article.articleId;
-        console.log("url : " + url)
+        const url = "/api/article/"+ article.articleId;
         fetch(url,{
             method: "PATCH",
             body : JSON.stringify(article),

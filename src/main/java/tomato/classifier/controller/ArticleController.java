@@ -2,17 +2,16 @@ package tomato.classifier.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tomato.classifier.config.auth.LoginUser;
 import tomato.classifier.dto.ArticleDto;
+import tomato.classifier.dto.CommentDto;
 import tomato.classifier.entity.User;
-import tomato.classifier.handler.ex.CustomApiException;
-import tomato.classifier.repository.UserRepository;
 import tomato.classifier.service.ArticleService;
+import tomato.classifier.service.AuthService;
 import tomato.classifier.service.CommentService;
 
 import java.util.Collections;
@@ -29,7 +28,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final CommentService commentService;
-    private final UserRepository userRepository;
+    private final AuthService authService;
 
     @GetMapping()
     public String articleMain(Model model) {
@@ -47,43 +46,39 @@ public class ArticleController {
     @GetMapping("/writeForm")
     public String articleAdd(@AuthenticationPrincipal LoginUser loginUser, Model model) {
 
-        String loginId = loginUser.getUsername();
-
-        User user = userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new CustomApiException("유저 조회를 실패했습니다."));
-
-        LoginResDto loginResDto = new LoginResDto(user);
+        LoginResDto loginResDto = authService.findLoginUser(loginUser);
 
         model.addAttribute("loginUser", loginResDto);
 
         return "board/articleAdd";
     }
 
-//    @GetMapping("/{articleId}")
-//    public String articleDetail(@AuthenticationPrincipal LoginUser loginUser, @PathVariable Integer articleId, Model model) {
-//
-//        ArticleDto articleDto = articleService.show(articleId);
-//
-//        List<CommentDto> comments = commentService.comments(articleId);
-//
-//
-//        if (loginUser != null) {
-//            User user = loginUser.getUser();
-//            LoginResDto loginResDto = new LoginResDto(user);
-//            model.addAttribute("loginUser", loginResDto);
-//        } else {
-//            model.addAttribute("loginUser", new );
-//        }
-//
-//        model.addAttribute("article", articleDto);
-//
-//        model.addAttribute("comments", comments);
-//
-//        return "board/articleDetail";
-//    }
+    @GetMapping("/{articleId}")
+    public String articleDetail(@AuthenticationPrincipal LoginUser loginUser, @PathVariable Integer articleId, Model model) {
 
-    @GetMapping("/editForm")
-    public String edit(@RequestParam Integer articleId, Model model) {
+        ArticleDto articleDto = articleService.show(articleId);
+
+        List<CommentDto> comments = commentService.comments(articleId);
+
+        if (loginUser != null) {
+
+            LoginResDto loginResDto = authService.findLoginUser(loginUser);
+
+            model.addAttribute("loginUser", loginResDto);
+
+        } else {
+            model.addAttribute("loginUser", new LoginResDto(new User()));
+        }
+
+        model.addAttribute("article", articleDto);
+
+        model.addAttribute("comments", comments);
+
+        return "board/articleDetail";
+    }
+
+    @GetMapping("/{articleId}/editForm")
+    public String edit(@PathVariable Integer articleId, Model model) {
 
         ArticleDto articleDto = articleService.show(articleId);
 

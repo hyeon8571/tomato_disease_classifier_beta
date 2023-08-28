@@ -22,4 +22,8 @@ public class AuthController {
         return "auth/signup";
     }
 
+    @GetMapping("/err-page")
+    public String errPage() {
+        return "message/unAuthenticatedMessage";
+    }
  }

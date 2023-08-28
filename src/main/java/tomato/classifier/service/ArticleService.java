@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tomato.classifier.dto.ArticleDto;
 import tomato.classifier.entity.Article;
 import tomato.classifier.entity.User;
+import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.UserRepository;
 
@@ -36,7 +37,7 @@ public class ArticleService {
 
     public ArticleDto show(Integer articleId) {
         Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패!"));
+                .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
 
         ArticleDto articleDto = ArticleDto.convertDto(article);
 
@@ -45,12 +46,14 @@ public class ArticleService {
 
     @Transactional
     public ArticleDto create(ArticleDto articleDto) {
+
         articleDto.setDeleteYn(false);
         articleDto.setUpdateYn(false);
 
         String nickname = articleDto.getNickname();
 
-        User user = userRepository.findByNickname(nickname).orElseThrow(null);
+        User user = userRepository.findByNickname(nickname)
+                .orElseThrow(() -> new CustomApiException("유저 조회를 실패했습니다."));
 
         Article article = Article.convertEntity(articleDto, user);
 
@@ -63,7 +66,7 @@ public class ArticleService {
     public ArticleDto update(Integer articleId, ArticleDto articleDto) {
 
         Article target = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패!"));
+                .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
 
         target.patch(articleDto);
 
@@ -76,9 +79,7 @@ public class ArticleService {
     public Article delete(Integer articleId) {
 
         Article target = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패!"));
-
-        String writer = target.getUser().getNickname();
+                .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
 
         target.delete();
 

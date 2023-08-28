@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tomato.classifier.dto.ArticleDto;
+import tomato.classifier.handler.ex.CustomApiException;
 
 import javax.persistence.*;
 import java.util.List;
@@ -40,7 +41,7 @@ public class Article extends BaseTime{
 
     public static Article convertEntity(ArticleDto target, User user) {
         if(target.getArticleId() != null)
-            throw new IllegalArgumentException("게시글 생성 실패, id가 존재");
+            throw new CustomApiException("DTO -> ENTITY 실패, Article");
 
         return new Article(
                 target.getArticleId(),
@@ -55,8 +56,9 @@ public class Article extends BaseTime{
 
     public void patch(ArticleDto articleDto) {
         if (this.articleId != articleDto.getArticleId()) {
-            throw new IllegalArgumentException("게시글 수정 실패!");
+            throw new CustomApiException("게시글 수정을 실패했습니다.");
         }
+        // "" 말고 다른걸로 수정해야할듯?
         if (articleDto.getTitle() != "") {
             this.title = articleDto.getTitle();
             this.updateYn = true;

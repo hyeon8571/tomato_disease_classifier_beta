@@ -56,13 +56,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
                 if (name.equals(JwtVO.HEADER)) {
                     String jwtToken = URLDecoder.decode(value, "utf-8");
-                    if (jwtToken == "" || !jwtToken.startsWith(JwtVO.TOKEN_PREFIX)) {
-                        return "";
-                    } else {
+                    if (jwtToken.startsWith(JwtVO.TOKEN_PREFIX)) {
                         return jwtToken;
                     }
-                } else {
-                    return "";
                 }
             }
             return "";
