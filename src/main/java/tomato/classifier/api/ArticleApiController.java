@@ -38,6 +38,8 @@ public class ArticleApiController {
     @DeleteMapping("/{articleId}")
     public ResponseEntity<?> delete(@PathVariable Integer articleId) {
 
+        System.out.println("접근");
+
         Article deleted = articleService.delete(articleId);
 
         return new ResponseEntity<>(new ResponseDto<>(1, "계시글 삭제 완료", deleted), HttpStatus.OK);

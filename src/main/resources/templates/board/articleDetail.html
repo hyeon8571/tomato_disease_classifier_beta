@@ -26,25 +26,25 @@
 
 <input id="hiddenId" type="hidden" th:value="${article.articleId}">
 
-<div class="bg-image p-5 text-center shadow-1-strong rounded mb-2 text-black-50"
-     style="background-image: url('/image/back.jpg'); height: 17vh; object-fit: cover; background-repeat:no-repeat; background-size:cover;">
+<div class="bg-image p-5 text-center shadow-1-strong rounded mb-2 text-black-100"
+     style="background-image: url(''); height: 17vh; object-fit: cover; background-repeat:no-repeat; background-size:cover;">
     <h1 class="mb-3 h2">자유게시판</h1>
 </div>
-<div class="container" style="width: 85%; margin-top: 1rem">
+<div class="container" style="width: 75%; margin-top: 1rem">
     <table class="table mb-1">
         <thead>
         <tr th:object="${loginUser}">
-            <th scope="col"><h1 th:text="${article.title}">title</h1></th>
+            <th scope="col"><h2 th:text="${article.title}">title</h2></th>
             <td>
-                <button th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${article.nickname}"
-                        style="display: inline-block; float: right; margin-right: 0.5rem"
-                        type="button" class="btn btn-danger" id="deleteBtn">삭제
-                </button>
-                <button th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${article.nickname}"
-                        style="display: inline-block; float: right;margin-right: 0.2rem" type="button"
-                        class="btn btn-primary"
-                        th:onclick="|location.href='@{/article/{articleId}/editForm(articleId = ${article.articleId})}'|">수정
-                </button>
+                <div class="dropdown" style="float: right" th:if="">
+                    <button type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none; outline: none">
+                        <img src="/image/board/more.png" style="width: 1.5rem; height: 1.5rem;" alt="더보기">
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">수정</a></li>
+                        <li><a class="dropdown-item" href="#">삭제</a></li>
+                    </ul>
+                </div>
             </td>
         </tr>
         </thead>
@@ -154,7 +154,7 @@
         const deleteBtn = document.querySelector("#deleteBtn");
 
         deleteBtn.addEventListener("click", function(){
-            const url = "api/article/" + article_Id
+            const url = "/api/article/" + article_Id
 
             const result = confirm("글을 삭제하겠습니까")
             if(result){

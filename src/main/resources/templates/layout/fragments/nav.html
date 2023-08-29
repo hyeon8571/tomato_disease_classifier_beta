@@ -40,7 +40,8 @@
                 <ul class="navbar-nav">
                     <block id="loginBtn" class="content" th:if="${#request.getCookies() == null}">
                         <li class="nav-item" style="margin-right: 0.7rem;">
-                            <a class="link-primary" href="/login" style="text-decoration: none;">Login</a>
+                            <a class="link-primary" href="/login" style="text-decoration: none;"><img src="/image/navbar/login.png" alt="Login"
+                                                                                                      style="width: 2rem; height: 2rem;"></a>
                         </li>
                     </block>
                     <block id="mypageBtn" class="content" th:if="${#request.getCookies() != null}">
@@ -51,7 +52,8 @@
                     </block>
                     <block id="logoutBtn" th:if="${#request.getCookies() != null}">
                         <li class="nav-item" style="margin-right: 0.7rem; float: right">
-                            <a class="link-danger" href="/api/logout" style="text-decoration: none">Logout</a>
+                            <a class="link-danger" href="/api/logout" style="text-decoration: none"><img src="/image/navbar/logout.png" alt="Logout"
+                                                                                                         style="width: 2rem; height: 2rem;"></a>
                         </li>
                     </block>
                 </ul>

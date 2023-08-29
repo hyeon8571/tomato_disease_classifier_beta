@@ -52,7 +52,7 @@ public class UserReqDto {
         private String username;
 
         @NotEmpty(message = "닉네임을 입력하세요")
-        @Size(min = 4, max = 20)
+        @Size(min = 4, max = 10)
         private String nickname;
 
         public User toEntity(BCryptPasswordEncoder passwordEncoder) {

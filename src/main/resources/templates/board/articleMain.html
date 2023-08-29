@@ -26,16 +26,14 @@
         <h1>자유 게시판</h1>
     </div>
 </div>
-<div id="wrapper">
+<div id="wrapper" style="margin-bottom: 10rem">
     <div class="container" style="height: 40vh; width: 75%">
         <div class="col-md-12">
-            <div style="margin-top:3rem;">
-                <button class="btn btn-secondary"
-                        th:onclick="|location.href='@{/article/writeForm}'|" type="button" style="float: right; margin-bottom: 1rem">
-                    글쓰기
-                </button>
+            <div style="margin-top:3rem; float: right; margin-bottom: 1rem">
+                <a href="/article/writeForm" style="text-decoration: none; color: green; font-size: 1.2rem"><img src="/image/board/write.png" alt="글쓰기"
+                     style="width: 2rem; height: 2rem;">&nbsp;글 쓰기</a>
             </div>
-            <table class="table">
+            <table class="table" style="margin-top: 1rem">
                 <thead class="table-light">
                 <tr>
                     <th>작성자</th>
