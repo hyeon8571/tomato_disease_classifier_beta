@@ -1,4 +1,4 @@
-# Tomato Disease Classifier V1
+# Tomato Disease Classifier V2
 
 <hr/> 
 Densenet + Flask + SpringBoot를 활용한 토마토 잎 질병 분류 웹
@@ -24,12 +24,13 @@ Densenet + Flask + SpringBoot를 활용한 토마토 잎 질병 분류 웹
   - 수정
   - 삭제
 
-
+### V1 -> V2 변화
+- Spring Security 적용
+- Jwt Token 활용
+- Resp Api
+- Custom Exception 사용
 
 ### 추가 예정 기능
-- Spring Security 적용
-- Jwt 토큰 활용
-- 비밀번호 암호화 적용
 - 아이디/비밀번호 찾기
 - 마이페이지 
 - 게시글 추천/비추천
