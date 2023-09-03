@@ -34,15 +34,15 @@
     <table class="table mb-1">
         <thead>
         <tr th:object="${loginUser}">
-            <th scope="col"><h2 th:text="${article.title}">title</h2></th>
+            <th scope="col"><h3 th:text="${article.title}">title</h3></th>
             <td>
-                <div class="dropdown" style="float: right" th:if="">
+                <div class="dropdown" style="float: right" th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${article.nickname}">
                     <button type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none; outline: none">
                         <img src="/image/board/more.png" style="width: 1.5rem; height: 1.5rem;" alt="더보기">
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">수정</a></li>
-                        <li><a class="dropdown-item" href="#">삭제</a></li>
+                        <li><a class="dropdown-item" th:href="@{/article/{articleId}/editForm(articleId=${article.articleId})}">수정</a></li>
+                        <li><a class="dropdown-item" id="deleteBtn">삭제</a></li>
                     </ul>
                 </div>
             </td>
@@ -51,20 +51,28 @@
 
         <tbody>
         <tr>
-            <th scope="row" th:text="${article.nickname} +  '&emsp; | &emsp;'  + ${article.updateTime}">작성자 | 작성시간</th>
-            <td><p th:text="'댓글 수: ' + ${comments.size()}">댓글 수: {{count}}</p></td>
+
+            <td><a th:text="${article.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${article.updateTime}"></a></td>
+            <td style="float: right">
+                <img src="/image/board/comment2.png" alt="댓글 수" style="width: 1.5rem; height: 1.5rem">
+                <a th:text="${article.commentCount} + '&emsp;'">10</a>
+                <img src="/image/board/good.png" alt="추천 수" style="width: 1.5rem; height: 1.5rem"/>
+                <a th:text="${article.commentCount} + '&emsp;'">10</a>
+                <img src="/image/board/bad.png" alt="비추천 수" style="width: 1.5rem; height: 1.5rem">
+                <a th:text="${article.commentCount} + '&nbsp;'">10</a>
+            </td>
         </tr>
         <tr>
-            <td colspan="2" style="font-size: 25px">
+            <td colspan="2" style="font-size: 20px">
                 <pre th:text="${article.content}">내용</pre>
             </td>
         </tr>
         </tbody>
     </table>
     <br>
-    <div class="container" style="width: 100%; margin-bottom: 3rem">
+    <div class="container" style="width: 100%; margin-bottom: 5rem">
         <form th:method="post">
-            <div class="mb-3" th:object="${loginUser}">
+            <div class="mb-1" th:object="${loginUser}">
                 <input id="commentUser" class="form-control form-control-sm" type="text"
                        aria-label=".form-control-sm example" value="" th:value="*{nickname}" disabled>
                 <textarea th:if="${loginUser.nickname} != null" class="form-control form-control-sm" id="commentContent" rows="3"
@@ -73,30 +81,28 @@
                           placeholder="로그인 후 이용가능"></textarea>
             </div>
             <p>
-                <button th:if="${loginUser.nickname} != null" class="btn btn-primary btn-lg" type="button" id="commentBtn"
-                        style="font-size:16px; width: 80px; height: 40px; margin-right:1rem">
+                <button th:if="${loginUser.nickname} != null" class="btn btn-success btn-lg" type="button" id="commentBtn"
+                        style="font-size:12px; float: right; background-color: forestgreen">
                     작성
                 </button>
 
                 <button th:if="${loginUser.nickname} == null" class="btn btn-secondary btn-lg" type="button"
-                        style="font-size:16px; width: 80px; height: 40px; margin-right:1rem" disabled>
+                        style="font-size:12px; float: right;" disabled>
                     작성
                 </button>
             </p>
         </form>
     </div>
-    <div class="container" style="width: 100%; margin-bottom: 5rem">
+    <div class="container" style="width: 100%; margin-bottom: 8rem">
         <table class="table">
             <tbody>
             <tr th:each="comment : ${comments}">
-                <td th:text="${comment.nickname}" th:class="col-sm-2">작성자</td>
-                <td th:text="${comment.updateTime}" th:class="col-sm-2">작성일</td>
+                <td class="col-3"><a th:text="${comment.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${comment.updateTime}"></a></td>
                 <td th:text="${comment.content}" th:class="col-sm-7" style="word-break: break-all">내용</td>
                 <td th:class="col-md-1">
-                    <div>
-                        <button th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${comment.nickname}" type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
+                    <div class="dropdown" style="float: right" th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${comment.nickname}">
+                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none; outline: none">
+                            <img src="/image/board/more.png" style="width: 1.5rem; height: 1.5rem;" alt="더보기">
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" th:id="commentSelect" data-bs-toggle="modal"
@@ -183,10 +189,10 @@
             content: document.querySelector("#commentContent").value
         }
 
-        if (comment.content == "") {
+        if (comment.content.length == 0) {
             alert("내용을 입력하세요.")
         } else {
-            const url = `/article/${article_Id}/comment-add`;
+            const url = "/api/comment";
 
             fetch(url, {
                 method: "POST",
@@ -207,10 +213,9 @@
 
     // 댓글 삭제
     function commentDeleteFunc(comment_id) {
-        const url = "/comment-delete/" + comment_id;
-        console.log(url);
+        const url = "/api/comment/" + comment_id;
 
-        const result = confirm("댓글을 삭제하겠습니까")
+        const result = confirm("댓글을 삭제하시겠습니까")
         if (result) {
             fetch(url, {
                 method: "DELETE"
@@ -241,7 +246,7 @@
 
         console.log(comment)
 
-        const url = "/comment-edit/" + comment.commentId
+        const url = "/api/comment/" + comment.commentId
         console.log(url);
 
         if (comment.commentWriter != "" && comment.content != "") {

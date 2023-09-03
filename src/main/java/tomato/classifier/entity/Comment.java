@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tomato.classifier.dto.CommentDto;
+import tomato.classifier.handler.ex.CustomApiException;
 
 import javax.persistence.*;
 
@@ -36,11 +37,11 @@ public class Comment extends BaseTime{
 
     public static Comment convertEntity(CommentDto commentDto, Article article, User user) {
         if (commentDto.getCommentId() != null) {
-            throw new IllegalArgumentException("Dto -> Entity 실패, id가 존재");
+            throw new CustomApiException("Dto -> Entity 전환을 실패했습니다.");
         }
 
         if (commentDto.getArticleId() != article.getArticleId()) {
-            throw new IllegalArgumentException("err, 게시글이 일치하지 않음");
+            throw new CustomApiException("Dto -> Entity 전환을 실패했습니다.");
         }
 
         return new Comment(
@@ -56,13 +57,12 @@ public class Comment extends BaseTime{
 
     public void patch(CommentDto commentDto) {
         if (this.commentId != commentDto.getCommentId()) {
-            throw new IllegalArgumentException("게시글 id가 일치하지 않습니다.");
+            throw new CustomApiException("댓글 수정을 실패했습니다.");
         }
 
-        if (commentDto.getContent() != "") {
-            this.content = commentDto.getContent();
-            this.updateYn = true;
-        }
+        this.content = commentDto.getContent();
+        this.updateYn = true;
+
     }
 
     public void delete() {

@@ -7,6 +7,7 @@ import tomato.classifier.dto.CommentDto;
 import tomato.classifier.entity.Article;
 import tomato.classifier.entity.Comment;
 import tomato.classifier.entity.User;
+import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.CommentRepository;
 import tomato.classifier.repository.UserRepository;
@@ -46,16 +47,18 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDto create(int articleId, CommentDto commentDto) {
-        Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글 생성 실패, 게시글 조회 실패"));
+    public CommentDto create(CommentDto commentDto) {
+
+        Article article = articleRepository.findById(commentDto.getArticleId())
+                .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
 
         commentDto.setDeleteYn(false);
         commentDto.setUpdateYn(false);
 
         String nickname = commentDto.getNickname();
 
-        User user = userRepository.findByNickname(nickname).orElseThrow(null);
+        User user = userRepository.findByNickname(nickname)
+                .orElseThrow(() -> new CustomApiException("유저 조회를 실패했습니다."));
 
         Comment comment = Comment.convertEntity(commentDto, article, user);
 
@@ -69,7 +72,7 @@ public class CommentService {
 
 
         Comment target = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글 조회 실패!"));
+                .orElseThrow(() -> new CustomApiException("댓글 조회를 실패했습니다."));
 
         target.patch(commentDto);
 
@@ -82,7 +85,7 @@ public class CommentService {
     public CommentDto delete(Integer commentId) {
 
         Comment target = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글 조회 실패!"));
+                .orElseThrow(() -> new CustomApiException("댓글 조회를 실패했습니다."));
 
         target.delete();
 

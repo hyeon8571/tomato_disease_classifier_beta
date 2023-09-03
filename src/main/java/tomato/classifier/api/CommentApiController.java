@@ -5,37 +5,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tomato.classifier.dto.CommentDto;
+import tomato.classifier.dto.ResponseDto;
 import tomato.classifier.service.CommentService;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/comment")
 public class CommentApiController {
 
     private  final CommentService commentService;
 
-    @PostMapping("/article/{articleId}/comment-add")
-    public ResponseEntity<CommentDto> write(@PathVariable Integer articleId, @RequestBody CommentDto commentDto) {
+    @PostMapping()
+    public ResponseEntity<?> write(@RequestBody CommentDto commentDto) {
 
-        CommentDto dto = commentService.create(articleId, commentDto);
+        CommentDto createdDto = commentService.create(commentDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(dto);
+        return new ResponseEntity<>(new ResponseDto<>(1, "댓글 등록 완료", createdDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/cmment-edit/{commentId}")
-    public ResponseEntity<CommentDto> edit(@PathVariable Integer commentId, @RequestBody CommentDto commentDto) {
+    @PatchMapping("/{commentId}")
+    public ResponseEntity<?> edit(@PathVariable Integer commentId, @RequestBody CommentDto commentDto) {
 
         CommentDto updateDto = commentService.update(commentId, commentDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(updateDto);
+        return new ResponseEntity<>(new ResponseDto<>(1, "댓글 수정 완료", updateDto), HttpStatus.OK);
     }
 
 
-    @DeleteMapping("/comment-delete/{commentId}")
-    public ResponseEntity<CommentDto> delete(@PathVariable Integer commentId) {
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<?> delete(@PathVariable Integer commentId) {
 
         CommentDto deletedDto = commentService.delete(commentId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(deletedDto);
+        return new ResponseEntity<>(new ResponseDto<>(1, "댓글 삭제 완료", deletedDto), HttpStatus.OK);
     }
 
 }

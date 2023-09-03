@@ -58,15 +58,11 @@ public class Article extends BaseTime{
         if (this.articleId != articleDto.getArticleId()) {
             throw new CustomApiException("게시글 수정을 실패했습니다.");
         }
-        // "" 말고 다른걸로 수정해야할듯?
-        if (articleDto.getTitle() != "") {
-            this.title = articleDto.getTitle();
-            this.updateYn = true;
-        }
-        if (articleDto.getContent() != "") {
-            this.content = articleDto.getContent();
-            this.updateYn = true;
-        }
+
+        this.title = articleDto.getTitle();
+        this.content = articleDto.getContent();
+        this.updateYn = true;
+
 
     }
 
