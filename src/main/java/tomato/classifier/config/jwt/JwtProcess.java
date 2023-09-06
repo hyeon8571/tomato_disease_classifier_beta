@@ -6,8 +6,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import tomato.classifier.config.auth.LoginUser;
-import tomato.classifier.entity.Role;
-import tomato.classifier.entity.User;
+import tomato.classifier.domain.entity.Role;
+import tomato.classifier.domain.entity.User;
 
 
 public class JwtProcess {

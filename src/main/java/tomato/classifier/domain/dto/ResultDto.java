@@ -1,4 +1,4 @@
-package tomato.classifier.dto;
+package tomato.classifier.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;

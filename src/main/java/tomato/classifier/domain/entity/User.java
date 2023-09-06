@@ -1,4 +1,4 @@
-package tomato.classifier.entity;
+package tomato.classifier.domain.entity;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package tomato.classifier.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
-import tomato.classifier.entity.Comment;
+import tomato.classifier.domain.entity.Comment;
 
 import java.util.List;
 

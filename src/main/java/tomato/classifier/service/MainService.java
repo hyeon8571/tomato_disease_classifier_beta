@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import tomato.classifier.dto.DiseaseDto;
-import tomato.classifier.dto.ResultDto;
-import tomato.classifier.entity.Disease;
+import tomato.classifier.domain.dto.DiseaseDto;
+import tomato.classifier.domain.dto.ResultDto;
+import tomato.classifier.domain.entity.Disease;
+import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.DiseaseRepository;
 
 import java.io.File;
@@ -67,7 +68,7 @@ public class MainService {
     public DiseaseDto getDiseaseInfo(ResultDto resultDto) {
 
         Disease target = diseaseRepository.findById(resultDto.getName())
-                .orElseThrow(() -> new IllegalArgumentException("질병 조회 실패"));
+                .orElseThrow(() -> new CustomApiException("질병 조회를 실패했습니다."));
 
         return DiseaseDto.convertDto(target, resultDto.getProb());
     }

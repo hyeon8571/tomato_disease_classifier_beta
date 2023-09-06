@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import tomato.classifier.dto.ResponseDto;
+import tomato.classifier.domain.dto.ResponseDto;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

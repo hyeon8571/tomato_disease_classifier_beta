@@ -1,7 +1,7 @@
 package tomato.classifier.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import tomato.classifier.entity.User;
+import tomato.classifier.domain.entity.User;
 
 import java.util.Optional;
 

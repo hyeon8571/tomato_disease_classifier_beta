@@ -1,9 +1,9 @@
-package tomato.classifier.entity;
+package tomato.classifier.domain.entity;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tomato.classifier.dto.ArticleDto;
+import tomato.classifier.domain.dto.ArticleDto;
 import tomato.classifier.handler.ex.CustomApiException;
 
 import javax.persistence.*;
@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Article extends BaseTime{
 
@@ -39,19 +38,31 @@ public class Article extends BaseTime{
     private List<Comment> comments;
 
 
+    @Builder
+    public Article(Integer articleId, String title, User user, String content, boolean deleteYn, boolean updateYn, List<Comment> comments) {
+        this.articleId = articleId;
+        this.title = title;
+        this.user = user;
+        this.content = content;
+        this.deleteYn = deleteYn;
+        this.updateYn = updateYn;
+        this.comments = comments;
+    }
+
     public static Article convertEntity(ArticleDto target, User user) {
         if(target.getArticleId() != null)
             throw new CustomApiException("DTO -> ENTITY 실패, Article");
 
-        return new Article(
-                target.getArticleId(),
-                target.getTitle(),
-                user,
-                target.getContent(),
-                target.isDeleteYn(),
-                target.isUpdateYn(),
-                target.getComments()
-        );
+        return Article.builder()
+                .articleId(target.getArticleId())
+                .title(target.getTitle())
+                .user(user)
+                .content(target.getContent())
+                .deleteYn(target.isDeleteYn())
+                .updateYn(target.isUpdateYn())
+                .comments(target.getComments())
+                .build();
+
     }
 
     public void patch(ArticleDto articleDto) {

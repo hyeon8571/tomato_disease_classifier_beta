@@ -1,6 +1,6 @@
 package tomato.classifier.repository;
 
-import tomato.classifier.entity.Comment;
+import tomato.classifier.domain.entity.Comment;
 
 import java.util.List;
 

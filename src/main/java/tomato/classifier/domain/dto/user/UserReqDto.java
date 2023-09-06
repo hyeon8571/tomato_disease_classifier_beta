@@ -1,10 +1,10 @@
-package tomato.classifier.dto.user;
+package tomato.classifier.domain.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import tomato.classifier.entity.Role;
-import tomato.classifier.entity.User;
+import tomato.classifier.domain.entity.Role;
+import tomato.classifier.domain.entity.User;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;

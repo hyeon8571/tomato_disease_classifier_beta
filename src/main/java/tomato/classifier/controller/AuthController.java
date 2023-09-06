@@ -1,12 +1,10 @@
 package tomato.classifier.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-
-import static tomato.classifier.dto.user.UserReqDto.*;
+import static tomato.classifier.domain.dto.user.UserReqDto.*;
 
 
 @Controller

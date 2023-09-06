@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import tomato.classifier.entity.User;
+import tomato.classifier.domain.entity.User;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,13 +1,13 @@
-package tomato.classifier.api;
+package tomato.classifier.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tomato.classifier.dto.ArticleDto;
-import tomato.classifier.dto.ResponseDto;
-import tomato.classifier.entity.Article;
+import tomato.classifier.domain.dto.ArticleDto;
+import tomato.classifier.domain.dto.ResponseDto;
+import tomato.classifier.domain.entity.Article;
 import tomato.classifier.service.ArticleService;
 
 

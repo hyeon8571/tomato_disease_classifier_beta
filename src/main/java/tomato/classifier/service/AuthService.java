@@ -5,15 +5,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tomato.classifier.config.auth.LoginUser;
-import tomato.classifier.dto.user.UserResDto;
-import tomato.classifier.entity.User;
+
+import tomato.classifier.domain.entity.User;
 import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.UserRepository;
 
 import javax.servlet.http.Cookie;
 
-import static tomato.classifier.dto.user.UserReqDto.*;
-import static tomato.classifier.dto.user.UserResDto.*;
+import static tomato.classifier.domain.dto.user.UserReqDto.*;
+import static tomato.classifier.domain.dto.user.UserResDto.*;
 
 @Service
 @RequiredArgsConstructor

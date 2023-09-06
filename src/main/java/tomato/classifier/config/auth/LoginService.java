@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import tomato.classifier.entity.User;
+import tomato.classifier.domain.entity.User;
 import tomato.classifier.repository.UserRepository;
 
 @Service

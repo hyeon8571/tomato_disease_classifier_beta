@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tomato.classifier.config.auth.LoginUser;
-import tomato.classifier.dto.ArticleDto;
-import tomato.classifier.dto.CommentDto;
-import tomato.classifier.entity.User;
+import tomato.classifier.domain.dto.ArticleDto;
+import tomato.classifier.domain.dto.CommentDto;
+import tomato.classifier.domain.entity.User;
 import tomato.classifier.service.ArticleService;
 import tomato.classifier.service.AuthService;
 import tomato.classifier.service.CommentService;
@@ -17,8 +17,7 @@ import tomato.classifier.service.CommentService;
 import java.util.Collections;
 import java.util.List;
 
-
-import static tomato.classifier.dto.user.UserResDto.*;
+import static tomato.classifier.domain.dto.user.UserResDto.*;
 
 @Controller
 @Slf4j

@@ -1,11 +1,11 @@
-package tomato.classifier.api;
+package tomato.classifier.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tomato.classifier.dto.CommentDto;
-import tomato.classifier.dto.ResponseDto;
+import tomato.classifier.domain.dto.CommentDto;
+import tomato.classifier.domain.dto.ResponseDto;
 import tomato.classifier.service.CommentService;
 
 @RestController

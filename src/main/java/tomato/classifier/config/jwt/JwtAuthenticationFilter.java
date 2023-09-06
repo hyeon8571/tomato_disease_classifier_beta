@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import tomato.classifier.config.auth.LoginUser;
+import tomato.classifier.domain.dto.user.UserReqDto;
+import tomato.classifier.domain.dto.user.UserResDto;
 import tomato.classifier.util.CustomResponseUtil;
 
 import javax.servlet.FilterChain;
@@ -22,8 +24,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import static tomato.classifier.dto.user.UserReqDto.*;
-import static tomato.classifier.dto.user.UserResDto.*;
+import static tomato.classifier.domain.dto.user.UserReqDto.*;
+import static tomato.classifier.domain.dto.user.UserResDto.*;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final Logger log = LoggerFactory.getLogger(getClass());

@@ -2,9 +2,9 @@ package tomato.classifier.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tomato.classifier.dto.ArticleDto;
-import tomato.classifier.entity.Article;
-import tomato.classifier.entity.User;
+import tomato.classifier.domain.dto.ArticleDto;
+import tomato.classifier.domain.entity.Article;
+import tomato.classifier.domain.entity.User;
 import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.UserRepository;

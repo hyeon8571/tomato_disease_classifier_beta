@@ -1,4 +1,4 @@
-package tomato.classifier.api;
+package tomato.classifier.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import static tomato.classifier.dto.user.UserReqDto.*;
+import static tomato.classifier.domain.dto.user.UserReqDto.*;
+
 
 @RequiredArgsConstructor
 @RequestMapping("/api")

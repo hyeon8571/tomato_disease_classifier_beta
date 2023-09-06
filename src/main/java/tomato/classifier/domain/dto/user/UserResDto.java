@@ -1,9 +1,9 @@
-package tomato.classifier.dto.user;
+package tomato.classifier.domain.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import tomato.classifier.entity.User;
+import tomato.classifier.domain.entity.User;
 
 public class UserResDto {
 

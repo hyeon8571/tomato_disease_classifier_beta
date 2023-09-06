@@ -1,16 +1,15 @@
-package tomato.classifier.entity;
+package tomato.classifier.domain.entity;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tomato.classifier.dto.CommentDto;
+import tomato.classifier.domain.dto.CommentDto;
 import tomato.classifier.handler.ex.CustomApiException;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Comment extends BaseTime{
 
@@ -35,6 +34,16 @@ public class Comment extends BaseTime{
     @Column
     private boolean updateYn;
 
+    @Builder
+    public Comment(Integer commentId, Article article, User user, String content, boolean deleteYn, boolean updateYn) {
+        this.commentId = commentId;
+        this.article = article;
+        this.user = user;
+        this.content = content;
+        this.deleteYn = deleteYn;
+        this.updateYn = updateYn;
+    }
+
     public static Comment convertEntity(CommentDto commentDto, Article article, User user) {
         if (commentDto.getCommentId() != null) {
             throw new CustomApiException("Dto -> Entity 전환을 실패했습니다.");
@@ -44,14 +53,14 @@ public class Comment extends BaseTime{
             throw new CustomApiException("Dto -> Entity 전환을 실패했습니다.");
         }
 
-        return new Comment(
-                commentDto.getCommentId(),
-                article,
-                user,
-                commentDto.getContent(),
-                commentDto.isDeleteYn(),
-                commentDto.isUpdateYn()
-        );
+        return Comment.builder()
+                .commentId(commentDto.getCommentId())
+                .article(article)
+                .user(user)
+                .content(commentDto.getContent())
+                .deleteYn(commentDto.isDeleteYn())
+                .updateYn(commentDto.isUpdateYn())
+                .build();
     }
 
 
