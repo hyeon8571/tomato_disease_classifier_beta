@@ -22,7 +22,7 @@ public class Article extends BaseTime{
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "loginId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column

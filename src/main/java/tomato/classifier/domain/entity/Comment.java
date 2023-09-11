@@ -22,7 +22,7 @@ public class Comment extends BaseTime{
     private Article article;
 
     @ManyToOne
-    @JoinColumn(name = "loginId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column

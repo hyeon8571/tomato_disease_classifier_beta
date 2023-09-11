@@ -13,6 +13,9 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(nullable = false, length = 20)
     private String loginId;
 
@@ -36,7 +39,8 @@ public class User {
     private List<Article> articles;
 
     @Builder
-    public User(String loginId, String password, String username, String nickname, String email, Role role, List<Article> articles) {
+    public User(Long id, String loginId, String password, String username, String nickname, String email, Role role, List<Article> articles) {
+        this.id = id;
         this.loginId = loginId;
         this.password = password;
         this.username = username;
