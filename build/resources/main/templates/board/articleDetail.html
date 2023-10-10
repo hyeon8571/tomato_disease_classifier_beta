@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div th:replace="/layout/fragments/nav.html :: nav"></div>
+
+<input id="hiddenId" type="hidden" th:value="${article.articleId}">
+
+<div class="bg-image p-5 text-center shadow-1-strong rounded mb-2 text-black-100"
+     style="background-image: url(''); height: 17vh; object-fit: cover; background-repeat:no-repeat; background-size:cover;">
+    <h1 class="mb-3 h2">자유게시판</h1>
+</div>
+<div class="container" style="width: 75%; margin-top: 1rem">
+    <table class="table mb-1">
+        <thead>
+        <tr th:object="${loginUser}">
+            <th scope="col"><h3 th:text="${article.title}">title</h3></th>
+            <td>
+                <div class="dropdown" style="float: right" th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${article.nickname}">
+                    <button type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none; outline: none">
+                        <img src="/image/board/more.png" style="width: 1.5rem; height: 1.5rem;" alt="더보기">
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/article/{articleId}/editForm(articleId=${article.articleId})}">수정</a></li>
+                        <li><a class="dropdown-item" id="deleteBtn">삭제</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+
+            <td><a th:text="${article.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${article.updateTime}"></a></td>
+            <td style="float: right">
+                <img src="/image/board/comment2.png" alt="댓글 수" style="width: 1.5rem; height: 1.5rem">
+                <a th:text="${article.commentCount} + '&emsp;'">10</a>
+                <img src="/image/board/good.png" alt="추천 수" style="width: 1.5rem; height: 1.5rem"/>
+                <a th:text="${article.commentCount} + '&emsp;'">10</a>
+                <img src="/image/board/bad.png" alt="비추천 수" style="width: 1.5rem; height: 1.5rem">
+                <a th:text="${article.commentCount} + '&nbsp;'">10</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="font-size: 20px">
+                <pre th:text="${article.content}">내용</pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <div class="container" style="width: 100%; margin-bottom: 5rem">
+        <form th:method="post">
+            <div class="mb-1" th:object="${loginUser}">
+                <input id="commentUser" class="form-control form-control-sm" type="text"
+                       aria-label=".form-control-sm example" value="" th:value="*{nickname}" disabled>
+                <textarea th:if="${loginUser.nickname} != null" class="form-control form-control-sm" id="commentContent" rows="3"
+                          placeholder="댓글 입력"></textarea>
+                <textarea th:if="${loginUser.nickname} == null" class="form-control form-control-sm" rows="3"
+                          placeholder="로그인 후 이용가능"></textarea>
+            </div>
+            <p>
+                <button th:if="${loginUser.nickname} != null" class="btn btn-success btn-lg" type="button" id="commentBtn"
+                        style="font-size:12px; float: right; background-color: forestgreen">
+                    작성
+                </button>
+
+                <button th:if="${loginUser.nickname} == null" class="btn btn-secondary btn-lg" type="button"
+                        style="font-size:12px; float: right;" disabled>
+                    작성
+                </button>
+            </p>
+        </form>
+    </div>
+    <div class="container" style="width: 100%; margin-bottom: 8rem">
+        <table class="table">
+            <tbody>
+            <tr th:each="comment : ${comments}">
+                <td class="col-3"><a th:text="${comment.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${comment.updateTime}"></a></td>
+                <td th:text="${comment.content}" th:class="col-sm-7" style="word-break: break-all">내용</td>
+                <td th:class="col-md-1">
+                    <div class="dropdown" style="float: right" th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${comment.nickname}">
+                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none; outline: none">
+                            <img src="/image/board/more.png" style="width: 1.5rem; height: 1.5rem;" alt="더보기">
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:id="commentSelect" data-bs-toggle="modal"
+                                   data-bs-target="#updateModal"
+                                   th:onclick="commentSelectFunc([[${comment.commentId}]], [[${comment.nickname}]], [[${comment.content}]])">수정</a>
+                            </li>
+                            <li><a class="dropdown-item" th:id="commentDelete"
+                                   th:onclick="commentDeleteFunc([[${comment.commentId}]])">삭제</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal -->
+
+<div th:fragment="updateModal" class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">댓글 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:method="post">
+                    <div class="mb-3">
+                        <input id="commentUpdateId" th:type="hidden" value="">
+                        <input class="form-control form-control-sm" type="text" aria-label=".form-control-sm example"
+                               id="commentUpdateWriter" value="" disabled>
+                        <textarea class="form-control form-control-sm" id="commentUpdateContent" rows="3"
+                                  value=""></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" th:id="commentUpdateBtn">수정</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="/layout/fragments/footer.html :: footer"></footer>
+
+</body>
+
+<script>
+    const article_Id = document.querySelector("#hiddenId").value;
+
+    // 게시글 삭제
+    if (document.querySelector("#deleteBtn") != null) {
+        const deleteBtn = document.querySelector("#deleteBtn");
+
+        deleteBtn.addEventListener("click", function(){
+            const url = "/api/article/" + article_Id
+
+            const result = confirm("글을 삭제하겠습니까")
+            if(result){
+                fetch(url,{
+                    method: "DELETE",
+                }).then(response => {
+                    const msg = (response.ok) ? "글이 삭제되었습니다" : "오류 발생"
+                    alert(msg);
+
+                    window.location.href ="/article";
+                })
+            }
+        })
+    }
+
+
+
+    // 댓글 작성
+    const submitBtn = document.querySelector("#commentBtn");
+
+    submitBtn.addEventListener("click", function () {
+
+        const comment = {
+            articleId: article_Id,
+            nickname: document.querySelector("#commentUser").value,
+            content: document.querySelector("#commentContent").value
+        }
+
+        if (comment.content.length == 0) {
+            alert("내용을 입력하세요.")
+        } else {
+            const url = "/api/comment";
+
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(comment),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                const msg = (response.ok) ? "댓글이 등록되었습니다" : "오류 발생"
+                alert(msg);
+
+                window.location.reload();
+            })
+        }
+
+    })
+
+
+    // 댓글 삭제
+    function commentDeleteFunc(comment_id) {
+        const url = "/api/comment/" + comment_id;
+
+        const result = confirm("댓글을 삭제하시겠습니까")
+        if (result) {
+            fetch(url, {
+                method: "DELETE"
+            }).then(response => {
+                const msg = (response.ok) ? "댓글이 삭제되었습니다" : "오류 발생"
+                alert(msg);
+
+                window.location.href = "/article/" + article_Id;
+            })
+        }
+    }
+
+    function commentSelectFunc(comment_id, writer, content) {
+        $('#commentUpdateId').val(comment_id)
+        $('#commentUpdateWriter').val(writer)
+        $('#commentUpdateContent').val(content)
+    }
+
+    // 댓글 수정
+    const commentUpdateBtn = document.querySelector("#commentUpdateBtn");
+    commentUpdateBtn.addEventListener("click", function () {
+        const comment = {
+            articleId: article_Id,
+            commentId: document.querySelector("#commentUpdateId").value,
+            commentWriter: document.querySelector("#commentUpdateWriter").value,
+            content: document.querySelector("#commentUpdateContent").value
+        }
+
+        console.log(comment)
+
+        const url = "/api/comment/" + comment.commentId
+        console.log(url);
+
+        if (comment.commentWriter != "" && comment.content != "") {
+            fetch(url, {
+                method: "PATCH",
+                body: JSON.stringify(comment),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                const msg = (response.ok) ? "댓글이 수정되었습니다" : "오류 발생"
+                alert(msg);
+
+                window.location.reload();
+            })
+        } else {
+            const msg = "내용을 입력하세요"
+            alert(msg)
+        }
+    })
+</script>
+

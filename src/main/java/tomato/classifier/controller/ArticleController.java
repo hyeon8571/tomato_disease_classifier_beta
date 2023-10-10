@@ -2,6 +2,10 @@ package tomato.classifier.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +14,11 @@ import tomato.classifier.config.auth.LoginUser;
 import tomato.classifier.domain.dto.ArticleDto;
 import tomato.classifier.domain.dto.CommentDto;
 import tomato.classifier.domain.entity.User;
+import tomato.classifier.domain.type.SearchType;
 import tomato.classifier.service.ArticleService;
 import tomato.classifier.service.AuthService;
 import tomato.classifier.service.CommentService;
+import tomato.classifier.service.PaginationService;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,15 +35,21 @@ public class ArticleController {
     private final CommentService commentService;
     private final AuthService authService;
 
+    private final PaginationService paginationService;
+
     @GetMapping()
-    public String articleMain(Model model) {
+    public String articleMain(
+            @RequestParam(required = false) SearchType searchType,
+            @RequestParam(required = false) String searchValue,
+            @PageableDefault(size = 10, sort = "updateTime", direction = Sort.Direction.DESC) Pageable pageable,
+            Model model) {
 
 
-        List<ArticleDto> articleDtos = articleService.showAll();
+        Page<ArticleDto> articles = articleService.searchArticles(searchType, searchValue, pageable);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
 
-        Collections.reverse(articleDtos);
-
-        model.addAttribute("articles", articleDtos);
+        model.addAttribute("articles", articles);
+        model.addAttribute("paginationBarNumbers", barNumbers);
 
         return "board/articleMain";
     }

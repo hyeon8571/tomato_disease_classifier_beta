@@ -1,10 +1,13 @@
 package tomato.classifier.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tomato.classifier.domain.dto.ArticleDto;
 import tomato.classifier.domain.entity.Article;
 import tomato.classifier.domain.entity.User;
+import tomato.classifier.domain.type.SearchType;
 import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.UserRepository;
@@ -16,23 +19,23 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
     private final UserRepository userRepository;
 
-    public List<ArticleDto> showAll() {
-        List<Article> articles = articleRepository.findAll();
+    @Transactional
+    public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
+        if (searchKeyword == null || searchKeyword.isBlank()) {
+            return articleRepository.findAll(pageable).map(ArticleDto::convertDto);
+        }
 
-        List<ArticleDto> articleDtos = new ArrayList<>();
-
-        articles.stream()
-                .filter(article -> article.isDeleteYn() == false)
-                .map(article -> ArticleDto.convertDto(article))
-                .forEach(articleDto -> articleDtos.add(articleDto));
-
-        return articleDtos;
+        return switch (searchType) {
+            case TITLE -> articleRepository.findByTitleContaining(searchKeyword, pageable).map(ArticleDto::convertDto);
+            case CONTENT -> articleRepository.findByContentContaining(searchKeyword, pageable).map(ArticleDto::convertDto);
+        };
     }
 
     public ArticleDto show(Integer articleId) {

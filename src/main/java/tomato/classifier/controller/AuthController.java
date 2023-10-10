@@ -32,4 +32,5 @@ public class AuthController {
     public String redirect() {
         return "redirect:/";
     }
+
  }

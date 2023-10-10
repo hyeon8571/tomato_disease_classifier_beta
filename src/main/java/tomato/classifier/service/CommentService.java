@@ -30,7 +30,7 @@ public class CommentService {
 
     public List<CommentDto> comments(Integer articleId) {
 
-        List<Comment> allComments = commentRepository.findByArticleId(articleId);
+        List<Comment> allComments = commentRepository.findAllByArticleId(articleId);
 
         List<CommentDto> allCommentDtos = allComments
                 .stream()

@@ -3,6 +3,7 @@ package tomato.classifier.domain.dto;
 import lombok.*;
 import tomato.classifier.domain.entity.Article;
 import tomato.classifier.domain.entity.Comment;
+import tomato.classifier.domain.entity.Like;
 
 import java.util.List;
 
@@ -27,7 +28,10 @@ public class ArticleDto {
 
     private List<Comment> comments;
 
+    private List<Like> likes;
+
     private Integer commentCount;
+
 
 
     @Builder
