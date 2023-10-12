@@ -41,7 +41,7 @@ public class ArticleController {
     public String articleMain(
             @RequestParam(required = false) SearchType searchType,
             @RequestParam(required = false) String searchValue,
-            @PageableDefault(size = 10, sort = "updateTime", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 10, sort = "modifiedTime", direction = Sort.Direction.DESC) Pageable pageable,
             Model model) {
 
 

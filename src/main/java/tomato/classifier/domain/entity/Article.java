@@ -12,20 +12,20 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Article extends BaseTime{
+public class Article extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer articleId;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(nullable = false, length = 1000)
     private String content;
 
     @Column
@@ -64,7 +64,6 @@ public class Article extends BaseTime{
                 .deleteYn(target.isDeleteYn())
                 .updateYn(target.isUpdateYn())
                 .comments(target.getComments())
-
                 .build();
 
     }

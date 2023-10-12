@@ -5,6 +5,7 @@ import tomato.classifier.domain.entity.Article;
 import tomato.classifier.domain.entity.Comment;
 import tomato.classifier.domain.entity.Like;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -24,7 +25,7 @@ public class ArticleDto {
 
     private boolean updateYn;
 
-    private String updateTime;
+    private LocalDateTime modifiedTime;
 
     private List<Comment> comments;
 
@@ -35,14 +36,14 @@ public class ArticleDto {
 
 
     @Builder
-    public ArticleDto(Integer articleId, String title, String content, String nickname, boolean deleteYn, boolean updateYn, String updateTime, List<Comment> comments, Integer commentCount) {
+    public ArticleDto(Integer articleId, String title, String content, String nickname, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime, List<Comment> comments, Integer commentCount) {
         this.articleId = articleId;
         this.title = title;
         this.content = content;
         this.nickname = nickname;
         this.deleteYn = deleteYn;
         this.updateYn = updateYn;
-        this.updateTime = updateTime;
+        this.modifiedTime = modifiedTime;
         this.comments = comments;
         this.commentCount = commentCount;
     }
@@ -66,7 +67,7 @@ public class ArticleDto {
                 .nickname(target.getUser().getNickname())
                 .deleteYn(target.isDeleteYn())
                 .updateYn(target.isUpdateYn())
-                .updateTime(target.getUpdateTime())
+                .modifiedTime(target.getModifiedTime())
                 .comments(target.getComments())
                 .commentCount(count)
                 .build();

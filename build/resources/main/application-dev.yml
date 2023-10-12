@@ -1,15 +1,12 @@
+debug: false
+management.endpoints.web.exposure.include: "*"
+
 logging:
   level:
-    hello:
-      springmvc: info
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-              nodeValue: DEBUG
-        SQL: DEBUG
+    tomato.tomato.classifier: debug
+    org.springframework.web.servlet: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
 server:
   servlet:
     session:
@@ -17,15 +14,14 @@ server:
       timeout: '1800'
 spring:
   jpa:
-    show:
-      sql: 'true'
-    defer-datasource-initialization: 'true'
-    hibernate:
-      ddl-auto: create
+    defer-datasource-initialization: true
+    hibernate.ddl-auto: create
+    open-in-view: false
+    show-sql: true
     properties:
+      hibernate.default_batch_fetch_size: 100
       hibernate:
-        show-sql: 'true'
-        format_sql: 'true'
+        format_sql: true
   datasource:
     password: shvhsy8571@
     driver-class-name: org.mariadb.jdbc.Driver

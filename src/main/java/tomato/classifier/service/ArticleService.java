@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tomato.classifier.domain.dto.ArticleDto;
 import tomato.classifier.domain.entity.Article;
 import tomato.classifier.domain.entity.User;
@@ -11,11 +12,6 @@ import tomato.classifier.domain.type.SearchType;
 import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.UserRepository;
-
-
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +22,7 @@ public class ArticleService {
 
     private final UserRepository userRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
         if (searchKeyword == null || searchKeyword.isBlank()) {
             return articleRepository.findAll(pageable).map(ArticleDto::convertDto);
@@ -35,6 +31,7 @@ public class ArticleService {
         return switch (searchType) {
             case TITLE -> articleRepository.findByTitleContaining(searchKeyword, pageable).map(ArticleDto::convertDto);
             case CONTENT -> articleRepository.findByContentContaining(searchKeyword, pageable).map(ArticleDto::convertDto);
+            case NICKNAME -> articleRepository.findByUser_NicknameContaining(searchKeyword, pageable).map(ArticleDto::convertDto);
         };
     }
 

@@ -52,7 +52,7 @@
         <tbody>
         <tr>
 
-            <td><a th:text="${article.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${article.updateTime}"></a></td>
+            <td><a th:text="${article.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${article.modifiedTime}"></a></td>
             <td style="float: right">
                 <img src="/image/board/comment2.png" alt="댓글 수" style="width: 1.5rem; height: 1.5rem">
                 <a th:text="${article.commentCount} + '&emsp;'">10</a>
@@ -97,7 +97,7 @@
         <table class="table">
             <tbody>
             <tr th:each="comment : ${comments}">
-                <td class="col-3"><a th:text="${comment.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${comment.updateTime}"></a></td>
+                <td class="col-3"><a th:text="${comment.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${comment.updatedTime}"></a></td>
                 <td th:text="${comment.content}" th:class="col-sm-7" style="word-break: break-all">내용</td>
                 <td th:class="col-md-1">
                     <div class="dropdown" style="float: right" th:if="${loginUser.nickname} != null and ${loginUser.nickname} == ${comment.nickname}">
