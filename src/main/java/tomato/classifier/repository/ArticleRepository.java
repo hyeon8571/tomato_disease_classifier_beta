@@ -13,7 +13,7 @@ import tomato.classifier.domain.entity.QArticle;
 
 
 public interface ArticleRepository extends
-        JpaRepository<Article, Integer>,
+        JpaRepository<Article, Long>,
         QuerydslPredicateExecutor<Article>
 //        QuerydslBinderCustomizer<QArticle>
 { // 기본 검색 외에도 검색 기능을 만들기 위해 사용

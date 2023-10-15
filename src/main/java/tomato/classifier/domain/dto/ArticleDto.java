@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ArticleDto {
 
-    private Integer articleId;
+    private Long articleId;
 
     private String title;
 
@@ -36,7 +36,7 @@ public class ArticleDto {
 
 
     @Builder
-    public ArticleDto(Integer articleId, String title, String content, String nickname, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime, List<Comment> comments, Integer commentCount) {
+    public ArticleDto(Long articleId, String title, String content, String nickname, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime, List<Comment> comments, Integer commentCount) {
         this.articleId = articleId;
         this.title = title;
         this.content = content;

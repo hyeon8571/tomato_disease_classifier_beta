@@ -28,7 +28,7 @@ public class CommentService {
 
     private final UserRepository userRepository;
 
-    public List<CommentDto> comments(Integer articleId) {
+    public List<CommentDto> comments(Long articleId) {
 
         List<Comment> allComments = commentRepository.findAllByArticleId(articleId);
 
@@ -68,7 +68,7 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDto update(Integer commentId, CommentDto commentDto) {
+    public CommentDto update(Long commentId, CommentDto commentDto) {
 
 
         Comment target = commentRepository.findById(commentId)
@@ -82,7 +82,7 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDto delete(Integer commentId) {
+    public CommentDto delete(Long commentId) {
 
         Comment target = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomApiException("댓글 조회를 실패했습니다."));

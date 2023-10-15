@@ -17,7 +17,7 @@
         }
     </style>
 </head>
-<body>
+<body style="margin-bottom: 1rem">
 <div th:replace="/layout/fragments/nav.html :: nav"></div>
 
 <div class="bg-image text-center shadow-1-strong text-black-100" id="background"
@@ -36,12 +36,12 @@
             <table class="table" style="margin-top: 1rem">
                 <thead class="table-light">
                 <tr>
-                    <th>작성자</th>
-                    <th>제목</th>
-                    <th>작성일</th>
-                    <th><img src="/image/board/comment2.png" alt="댓글수"
+                    <th class="col">작성자</th>
+                    <th class="col-6">제목</th>
+                    <th class="col">작성일</th>
+                    <th class="col"><img src="/image/board/comment2.png" alt="댓글수"
                              style="width: 1.5rem; height: 1.5rem;"></th>
-                    <th><img src="/image/board/good.png" alt="좋아요"
+                    <th class="col"><img src="/image/board/good.png" alt="좋아요"
                              style="width: 1.5rem; height: 1.5rem;"></th>
                 </tr>
                 </thead>
@@ -52,7 +52,7 @@
                         <a th:href="@{/article/{articleId}(articleId=${article.articleId})}"
                            th:text="${article.title}">제목</a>
                     </td>
-                    <td th:text="${#temporals.format(article.modifiedTime, 'yyyy-MM-dd')}">작성일</td>
+                    <td style="font-size: 0.8rem; color: gray" th:text="${#temporals.format(article.modifiedTime, 'yyyy-MM-dd HH:mm')}">작성일</td>
                     <td th:text="'&nbsp;'+${article.commentCount}">댓글수</td>
                     <td>&nbsp;30</td>
                 </tr>
@@ -68,10 +68,9 @@
                 </ul>
             </nav>
             <hr class="my-4">
+            <div th:replace="/layout/fragments/footer.html :: footer"></div>
         </div>
     </div>
 </div>
-
-<div th:replace="/layout/fragments/footer.html :: footer"></div>
-
 </body>
+</html>

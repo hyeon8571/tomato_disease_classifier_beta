@@ -14,7 +14,7 @@ public class Disease {
     @Column
     private String d_name;
 
-    @Column
+    @Column(length = 10000)
     private String solution;
 
     @Column

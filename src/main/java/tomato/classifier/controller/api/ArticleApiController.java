@@ -28,7 +28,7 @@ public class ArticleApiController {
     }
 
     @PatchMapping("/{articleId}")
-    public ResponseEntity<?> edit(@PathVariable Integer articleId, @RequestBody ArticleDto articleDto) {
+    public ResponseEntity<?> edit(@PathVariable Long articleId, @RequestBody ArticleDto articleDto) {
 
         ArticleDto updatedDto = articleService.update(articleId, articleDto);
 
@@ -36,7 +36,7 @@ public class ArticleApiController {
     }
 
     @DeleteMapping("/{articleId}")
-    public ResponseEntity<?> delete(@PathVariable Integer articleId) {
+    public ResponseEntity<?> delete(@PathVariable Long articleId) {
 
         Article deleted = articleService.delete(articleId);
 

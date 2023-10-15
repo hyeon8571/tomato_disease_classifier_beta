@@ -50,9 +50,8 @@
         </thead>
 
         <tbody>
-        <tr>
-
-            <td><a th:text="${article.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${article.modifiedTime}"></a></td>
+        <tr style="white-space: nowrap;">
+            <td><a th:text="${article.nickname} + '&emsp;&emsp;&emsp;'"></a><a style="font-size: 0.8rem; color: gray" th:text="${#temporals.format(article.modifiedTime, 'yyyy-MM-dd HH:mm')}"></a></td>
             <td style="float: right">
                 <img src="/image/board/comment2.png" alt="댓글 수" style="width: 1.5rem; height: 1.5rem">
                 <a th:text="${article.commentCount} + '&emsp;'">10</a>
@@ -64,7 +63,7 @@
         </tr>
         <tr>
             <td colspan="2" style="font-size: 20px">
-                <pre th:text="${article.content}">내용</pre>
+                <pre style="white-space: pre-wrap;" th:text="${article.content}">내용</pre>
             </td>
         </tr>
         </tbody>

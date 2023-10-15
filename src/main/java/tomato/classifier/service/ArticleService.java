@@ -35,7 +35,7 @@ public class ArticleService {
         };
     }
 
-    public ArticleDto show(Integer articleId) {
+    public ArticleDto show(Long articleId) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
 
@@ -63,7 +63,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public ArticleDto update(Integer articleId, ArticleDto articleDto) {
+    public ArticleDto update(Long articleId, ArticleDto articleDto) {
 
         Article target = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
@@ -76,7 +76,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public Article delete(Integer articleId) {
+    public Article delete(Long articleId) {
 
         Article target = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));

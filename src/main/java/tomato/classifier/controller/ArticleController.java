@@ -65,7 +65,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}")
-    public String articleDetail(@AuthenticationPrincipal LoginUser loginUser, @PathVariable Integer articleId, Model model) {
+    public String articleDetail(@AuthenticationPrincipal LoginUser loginUser, @PathVariable Long articleId, Model model) {
 
         ArticleDto articleDto = articleService.show(articleId);
 
@@ -89,7 +89,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}/editForm")
-    public String edit(@PathVariable Integer articleId, Model model) {
+    public String edit(@PathVariable Long articleId, Model model) {
 
         ArticleDto articleDto = articleService.show(articleId);
 

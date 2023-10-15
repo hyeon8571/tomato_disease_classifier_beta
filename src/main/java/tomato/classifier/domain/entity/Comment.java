@@ -15,17 +15,17 @@ public class Comment extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer commentId;
+    private Long commentId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "articleId")
     private Article article;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(nullable = false, length = 500)
     private String content;
 
     @Column
@@ -35,7 +35,7 @@ public class Comment extends BaseTime{
     private boolean updateYn;
 
     @Builder
-    public Comment(Integer commentId, Article article, User user, String content, boolean deleteYn, boolean updateYn) {
+    public Comment(Long commentId, Article article, User user, String content, boolean deleteYn, boolean updateYn) {
         this.commentId = commentId;
         this.article = article;
         this.user = user;

@@ -16,16 +16,16 @@ public class Article extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer articleId;
+    private Long articleId;
 
     @Column(nullable = false)
     private String title;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 10000)
     private String content;
 
     @Column
@@ -41,7 +41,7 @@ public class Article extends BaseTime {
     private List<Like> likes;
 
     @Builder
-    public Article(Integer articleId, String title, User user, String content, boolean deleteYn, boolean updateYn, List<Comment> comments, List<Like> likes) {
+    public Article(Long articleId, String title, User user, String content, boolean deleteYn, boolean updateYn, List<Comment> comments, List<Like> likes) {
         this.articleId = articleId;
         this.title = title;
         this.user = user;

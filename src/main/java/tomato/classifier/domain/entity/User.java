@@ -10,25 +10,25 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class User {
+public class User extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(unique = true, nullable = false, length = 20)
     private String loginId;
 
-    @Column(nullable = false, length = 60) // 패스워드 인코딩(BCrypt)시 늘어나서 60자로 줌
+    @Column(nullable = false, length = 100) // 패스워드 인코딩(BCrypt)시 늘어나서 60자로 줌
     private String password;
 
-    @Column(unique = true, nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private String username;
 
     @Column(unique = true, nullable = false, length = 10)
     private String nickname;
 
-    @Column(nullable = false, length = 20)
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
 
     @Enumerated(EnumType.STRING)

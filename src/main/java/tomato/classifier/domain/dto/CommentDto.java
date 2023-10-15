@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentDto {
 
-    private Integer commentId;
+    private Long commentId;
 
-    private Integer articleId;
+    private Long articleId;
 
     private String nickname;
 
@@ -26,7 +26,7 @@ public class CommentDto {
     private LocalDateTime modifiedTime;
 
     @Builder
-    public CommentDto(Integer commentId, Integer articleId, String nickname, String content, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime) {
+    public CommentDto(Long commentId, Long articleId, String nickname, String content, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime) {
         this.commentId = commentId;
         this.articleId = articleId;
         this.nickname = nickname;

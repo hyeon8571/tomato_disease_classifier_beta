@@ -6,8 +6,8 @@ import tomato.classifier.domain.entity.Comment;
 
 import java.util.List;
 
-public interface CommentRepository extends JpaRepository<Comment, Integer> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
    @Query(value = "select * from Comment where article_id = :articleId", nativeQuery = true)
-   List<Comment> findAllByArticleId(Integer articleId);
+   List<Comment> findAllByArticleId(Long articleId);
 }

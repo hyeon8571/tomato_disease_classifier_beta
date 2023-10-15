@@ -24,7 +24,7 @@ public class CommentApiController {
     }
 
     @PatchMapping("/{commentId}")
-    public ResponseEntity<?> edit(@PathVariable Integer commentId, @RequestBody CommentDto commentDto) {
+    public ResponseEntity<?> edit(@PathVariable Long commentId, @RequestBody CommentDto commentDto) {
 
         CommentDto updateDto = commentService.update(commentId, commentDto);
 
@@ -33,7 +33,7 @@ public class CommentApiController {
 
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> delete(@PathVariable Integer commentId) {
+    public ResponseEntity<?> delete(@PathVariable Long commentId) {
 
         CommentDto deletedDto = commentService.delete(commentId);
 
