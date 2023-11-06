@@ -13,22 +13,27 @@ public class CommentRequest {
 
     private Long articleId;
 
+    private String nickname;
+
     private Long parentCommentId;
 
     private String content;
 
+
     @Builder
-    public CommentRequest(Long articleId, Long parentCommentId, String content) {
+    public CommentRequest(Long articleId, Long parentCommentId, String content, String nickname) {
         this.articleId = articleId;
+        this.nickname = nickname;
         this.parentCommentId = parentCommentId;
         this.content = content;
     }
 
     public CommentDto toDto() {
-        return CommentDto.builder()
-                .articleId(this.articleId)
-                .parentCommentId(this.parentCommentId)
-                .content(this.content)
-                .build();
+        return CommentDto.of(
+                articleId,
+                nickname,
+                parentCommentId,
+                content
+        );
     }
 }

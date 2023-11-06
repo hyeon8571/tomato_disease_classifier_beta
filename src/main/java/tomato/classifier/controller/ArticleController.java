@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tomato.classifier.config.auth.LoginUser;
 import tomato.classifier.domain.dto.ArticleDto;
-import tomato.classifier.domain.dto.CommentDto;
 import tomato.classifier.domain.entity.User;
 import tomato.classifier.domain.type.SearchType;
 import tomato.classifier.service.ArticleService;
@@ -43,7 +42,6 @@ public class ArticleController {
             @PageableDefault(size = 10, sort = "modifiedTime", direction = Sort.Direction.DESC) Pageable pageable,
             Model model) {
 
-
         Page<ArticleDto> articles = articleService.searchArticles(searchType, searchValue, pageable);
         List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
 
@@ -69,8 +67,6 @@ public class ArticleController {
 
         ArticleDto articleDto = articleService.show(articleId);
 
-        List<CommentDto> comments = commentService.comments(articleId);
-
         if (loginUser != null) {
 
             LoginResDto loginResDto = authService.findLoginUser(loginUser);
@@ -83,7 +79,7 @@ public class ArticleController {
 
         model.addAttribute("article", articleDto);
 
-        model.addAttribute("comments", comments);
+        model.addAttribute("comments", articleDto.getComments());
 
         return "board/articleDetail";
     }

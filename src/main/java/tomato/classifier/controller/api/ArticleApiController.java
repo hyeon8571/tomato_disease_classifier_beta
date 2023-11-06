@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import tomato.classifier.domain.dto.ArticleDto;
 import tomato.classifier.domain.dto.ResponseDto;
 import tomato.classifier.domain.dto.request.ArticleRequest;
-import tomato.classifier.domain.entity.Article;
 import tomato.classifier.service.ArticleService;
 
 
@@ -39,9 +38,9 @@ public class ArticleApiController {
     @DeleteMapping("/{articleId}")
     public ResponseEntity<?> delete(@PathVariable Long articleId) {
 
-        Article deleted = articleService.delete(articleId);
+        ArticleDto dto = articleService.delete(articleId);
 
-        return new ResponseEntity<>(new ResponseDto<>(1, "계시글 삭제 완료", deleted), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>(1, "계시글 삭제 완료", dto), HttpStatus.OK);
     }
 }
 

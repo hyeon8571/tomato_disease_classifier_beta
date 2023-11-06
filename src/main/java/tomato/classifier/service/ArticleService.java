@@ -1,6 +1,7 @@
 package tomato.classifier.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import tomato.classifier.handler.ex.CustomApiException;
 import tomato.classifier.repository.ArticleRepository;
 import tomato.classifier.repository.UserRepository;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -36,6 +38,7 @@ public class ArticleService {
         };
     }
 
+    @Transactional(readOnly = true)
     public ArticleDto show(Long articleId) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
@@ -45,7 +48,6 @@ public class ArticleService {
         return articleDto;
     }
 
-    @Transactional
     public ArticleDto create(ArticleDto articleDto) {
 
         articleDto.setDeleteYn(false);
@@ -63,7 +65,6 @@ public class ArticleService {
         return ArticleDto.toDto(created);
     }
 
-    @Transactional
     public ArticleDto update(Long articleId, ArticleRequest articleRequest) {
 
         Article target = articleRepository.findById(articleId)
@@ -76,8 +77,7 @@ public class ArticleService {
         return ArticleDto.toDto(updated);
     }
 
-    @Transactional
-    public Article delete(Long articleId) {
+    public ArticleDto delete(Long articleId) {
 
         Article target = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
@@ -86,6 +86,8 @@ public class ArticleService {
 
         Article deleted = articleRepository.save(target);
 
-        return deleted;
+        ArticleDto dto = ArticleDto.toDto(deleted);
+
+        return dto;
     }
 }

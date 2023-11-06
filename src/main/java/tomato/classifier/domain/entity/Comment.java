@@ -3,11 +3,14 @@ package tomato.classifier.domain.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tomato.classifier.domain.dto.CommentDto;
 import tomato.classifier.domain.dto.request.CommentRequest;
 import tomato.classifier.handler.ex.CustomApiException;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,8 +29,13 @@ public class Comment extends BaseTime{
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Setter
     @Column(updatable = false)
     private Long parentCommentId;
+
+    @OrderBy("createdTime ASC")
+    @OneToMany(mappedBy = "parentCommentId", cascade = CascadeType.ALL)
+    private Set<Comment> childComments = new LinkedHashSet<>();
 
     @Column(nullable = false, length = 500)
     private String content;
@@ -59,7 +67,6 @@ public class Comment extends BaseTime{
         }
 
         return Comment.builder()
-                .commentId(commentDto.getCommentId())
                 .article(article)
                 .user(user)
                 .parentCommentId(commentDto.getParentCommentId())
@@ -68,7 +75,6 @@ public class Comment extends BaseTime{
                 .updateYn(commentDto.isUpdateYn())
                 .build();
     }
-
 
     public void patch(CommentRequest commentRequest) {
 
@@ -79,6 +85,11 @@ public class Comment extends BaseTime{
 
     public void delete() {
         this.deleteYn = true;
+    }
+
+    public void addChildComment(Comment child) {
+        child.setParentCommentId(this.getCommentId());
+        this.getChildComments().add(child);
     }
 
 }

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -47,14 +48,10 @@ public class CommentService {
         return comments;
     }
 
-    @Transactional
     public CommentDto create(CommentDto commentDto) {
 
         Article article = articleRepository.findById(commentDto.getArticleId())
                 .orElseThrow(() -> new CustomApiException("게시글 조회를 실패했습니다."));
-
-        commentDto.setDeleteYn(false);
-        commentDto.setUpdateYn(false);
 
         String nickname = commentDto.getNickname();
 
@@ -63,14 +60,17 @@ public class CommentService {
 
         Comment comment = Comment.toEntity(commentDto, article, user);
 
-        Comment created = commentRepository.save(comment);
-
-        return CommentDto.toDto(created);
+        if (commentDto.getParentCommentId() != null) {
+            Comment parentComment = commentRepository.getReferenceById(commentDto.getParentCommentId());
+            parentComment.addChildComment(comment);
+            log.info("childComments: {}", parentComment.getChildComments().stream().map(commenta -> commenta.getContent()));
+        } else {
+            commentRepository.save(comment);
+        }
+        return CommentDto.toDto(comment);
     }
 
-    @Transactional
     public CommentDto update(Long commentId, CommentRequest commentRequest) {
-
 
         Comment target = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomApiException("댓글 조회를 실패했습니다."));
@@ -82,7 +82,6 @@ public class CommentService {
         return CommentDto.toDto(updated);
     }
 
-    @Transactional
     public CommentDto delete(Long commentId) {
 
         Comment target = commentRepository.findById(commentId)

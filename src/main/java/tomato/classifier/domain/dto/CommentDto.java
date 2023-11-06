@@ -4,11 +4,15 @@ import lombok.*;
 import tomato.classifier.domain.entity.Comment;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CommentDto {
 
     private Long commentId;
@@ -19,6 +23,8 @@ public class CommentDto {
 
     private Long parentCommentId;
 
+    private Set<CommentDto> childComments;
+
     private String content;
 
     private boolean deleteYn;
@@ -27,30 +33,33 @@ public class CommentDto {
 
     private LocalDateTime modifiedTime;
 
-    @Builder
-    public CommentDto(Long commentId, Long articleId, String nickname, Long parentCommentId, String content, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime) {
-        this.commentId = commentId;
-        this.articleId = articleId;
-        this.nickname = nickname;
-        this.parentCommentId = parentCommentId;
-        this.content = content;
-        this.deleteYn = deleteYn;
-        this.updateYn = updateYn;
-        this.modifiedTime = modifiedTime;
+    public static CommentDto of(Long articleId, String nickname, Long parentCommentId, String content) {
+        return CommentDto.of(null, articleId, nickname, parentCommentId, content, false, false, null);
+    }
+
+    public static CommentDto of(Long commentId, Long articleId, String nickname, Long parentCommentId, String content, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime) {
+        Comparator<CommentDto> childCommentComparator = Comparator
+                .comparing(CommentDto::getModifiedTime)
+                .thenComparing(CommentDto::getCommentId); // 오름차순
+        return new CommentDto(commentId, articleId, nickname, parentCommentId, new TreeSet<>(childCommentComparator), content, deleteYn, updateYn, modifiedTime);
     }
 
     public static CommentDto toDto(Comment target) {
 
-        return CommentDto.builder()
-                .commentId(target.getCommentId())
-                .articleId(target.getArticle().getArticleId())
-                .nickname(target.getUser().getNickname())
-                .parentCommentId(target.getParentCommentId())
-                .content(target.getContent())
-                .deleteYn(target.isDeleteYn())
-                .updateYn(target.isUpdateYn())
-                .modifiedTime(target.getModifiedTime())
-                .build();
+        return CommentDto.of(
+                target.getCommentId(),
+                target.getArticle().getArticleId(),
+                target.getUser().getNickname(),
+                target.getParentCommentId(),
+                target.getContent(),
+                target.isDeleteYn(),
+                target.isUpdateYn(),
+                target.getModifiedTime()
+                );
+    }
+
+    public boolean hasParentComment() {
+        return parentCommentId != null;
     }
 
 }

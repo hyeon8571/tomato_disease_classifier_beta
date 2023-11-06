@@ -6,7 +6,9 @@ import tomato.classifier.domain.entity.Comment;
 import tomato.classifier.domain.entity.Like;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -27,16 +29,15 @@ public class ArticleDto {
 
     private LocalDateTime modifiedTime;
 
-    private List<Comment> comments;
+    private Set<CommentDto> comments;
 
     private List<Like> likes;
 
     private Integer commentCount;
 
 
-
     @Builder
-    public ArticleDto(Long articleId, String title, String content, String nickname, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime, List<Comment> comments, Integer commentCount) {
+    public ArticleDto(Long articleId, String title, String content, String nickname, boolean deleteYn, boolean updateYn, LocalDateTime modifiedTime, Set<CommentDto> comments, Integer commentCount) {
         this.articleId = articleId;
         this.title = title;
         this.content = content;
@@ -60,17 +61,61 @@ public class ArticleDto {
             }
         }
 
-        return ArticleDto.builder()
-                .articleId(target.getArticleId())
-                .title(target.getTitle())
-                .content(target.getContent())
-                .nickname(target.getUser().getNickname())
-                .deleteYn(target.isDeleteYn())
-                .updateYn(target.isUpdateYn())
-                .modifiedTime(target.getModifiedTime())
-                .comments(target.getComments())
-                .commentCount(count)
-                .build();
+        if (target.getComments() != null) {
+            Set<CommentDto> commentDtos =  target.getComments().stream()
+                    .filter(comment -> comment.isDeleteYn() == false)
+                    .map(CommentDto::toDto)
+                    .collect(Collectors.toUnmodifiableSet());
+
+            return ArticleDto.builder()
+                    .articleId(target.getArticleId())
+                    .title(target.getTitle())
+                    .content(target.getContent())
+                    .nickname(target.getUser().getNickname())
+                    .deleteYn(target.isDeleteYn())
+                    .updateYn(target.isUpdateYn())
+                    .modifiedTime(target.getModifiedTime())
+                    .comments(organizedComments(commentDtos))
+                    .commentCount(count)
+                    .build();
+        } else {
+            return ArticleDto.builder()
+                    .articleId(target.getArticleId())
+                    .title(target.getTitle())
+                    .content(target.getContent())
+                    .nickname(target.getUser().getNickname())
+                    .deleteYn(target.isDeleteYn())
+                    .updateYn(target.isUpdateYn())
+                    .modifiedTime(target.getModifiedTime())
+                    .commentCount(count)
+                    .build();
+        }
+    }
+
+    /**
+     * parentCommentId가 존재하는 댓글은 오름차순(CommentDto 의 toDto 시 실행), 없는 댓글은 내림차순 정렬
+     * -> 둘다 오름차순으로 변경
+     */
+    private static Set<CommentDto> organizedComments(Set<CommentDto> comments) {
+        Map<Long, CommentDto> map = comments.stream()
+                .collect(Collectors.toMap(CommentDto::getCommentId, Function.identity()));
+
+        map.values().stream()
+                .filter(CommentDto::hasParentComment)
+                .forEach(comment -> {
+                    CommentDto parentComment = map.get(comment.getParentCommentId());
+                    parentComment.getChildComments().add(comment);
+                });
+
+        return map.values().stream()
+                .filter(comment -> !comment.hasParentComment())
+                .collect(Collectors.toCollection(() ->
+                        new TreeSet<>(Comparator
+                                .comparing(CommentDto::getModifiedTime)
+                                .thenComparingLong(CommentDto::getCommentId)
+                        )
+                        ));
+
     }
 
 }
